@@ -44,11 +44,11 @@ const destroy = async (req: Request, res: Response) => {
     res.json(deleted);
 };
 
-const articleRoutes = (app: express.Application) => {
+const orderRoutes = (app: express.Application) => {
     app.get('/orders', index);
     app.get('/orders/:id', show);
     app.post('/orders', create);
     app.delete('/orders', destroy);
 };
 
-export default articleRoutes;
+export default orderRoutes;

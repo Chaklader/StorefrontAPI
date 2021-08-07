@@ -28,7 +28,7 @@ export class ProductStore {
 
             return result.rows;
         } catch (err) {
-            throw new Error(`Could not get products with error: ${err}`);
+            throw new Error(`Could not GET products with error: ${err}`);
         }
     }
 
