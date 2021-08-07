@@ -33,14 +33,6 @@ const create = async (req: Request, res: Response) => {
             password: req.body.password,
         };
 
-        /* 
-           const hash = bcrypt.hashSync(
-                u.password + pepper, 
-                parseInt(saltRounds)
-            );
-
-        */
-
         const newUser = await store.create(user);
         // var token = jwt.sign({ user: newUser }, TOK_SECRET);
         res.json(newUser);
@@ -50,23 +42,32 @@ const create = async (req: Request, res: Response) => {
     }
 };
 
-// const authenticate = async (req: Request, res: Response) => {
-//     const user: User = {
-//         username: req.body.username,
-//         password_digest: req.body.password,
-//     };
-//     try {
-//         const u = await userStore.authenticate(
-//             user.username,
-//             user.password_digest
-//         );
-//         var token = jwt.sign({ user: u }, TOK_SECRET);
-//         res.json(token);
-//     } catch (error) {
-//         res.status(401);
-//         res.json({ error });
-//     }
-// };
+const authenticate = async (_req: Request, res: Response) => {
+    try {
+
+
+        const user: User = {
+            firstName: _req.body.firstName,
+            lastName: _req.body.lastName,
+            password: _req.body.password,
+        };
+
+        console.log("The first name is = "+ user.firstName);
+        const authenticatedUser = await store.authenticate(
+            user.firstName,
+            user.lastName
+        );
+
+        if (authenticatedUser) {
+            return res.json('user is autheticated');
+        }
+
+        return res.json('user is not autheticated....');
+    } catch (error) {
+        res.status(401);
+        res.json({ error });
+    }
+};
 
 // const update = async (req: Request, res: Response) => {
 //     // create the user
@@ -122,6 +123,8 @@ const userRoute = (app: express.Application) => {
     // app.put('/users/:id', update);
 
     app.post('/users', create);
+    app.post('/users/authenticate', authenticate);
+
     app.get('/users', index);
     app.get('/users/:id', show);
     app.delete('/users/:id', destroy);

@@ -1,6 +1,7 @@
 import client from '../database';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import { json } from 'body-parser';
 
 dotenv.config();
 
@@ -20,12 +21,9 @@ export type User = {
 const pepper = process.env.BYCRYPT_PASSWORD;
 const saltRounds = '' + process.env.SALT_ROUNDS;
 
-
-
 export class UsersManagement {
     async create(u: User): Promise<User> {
         try {
-
             const hashedPassword = bcrypt.hashSync(
                 u.password + pepper,
                 parseInt(saltRounds)
@@ -39,8 +37,7 @@ export class UsersManagement {
             const result = await conn.query(sql, [
                 u.firstName,
                 u.lastName,
-                // u.password,
-                hashedPassword
+                hashedPassword,
             ]);
 
             const newUser = result.rows[0];
@@ -53,6 +50,39 @@ export class UsersManagement {
                 `Could not add new user with name ${u.firstName} ${u.lastName}. Error: ${err}`
             );
         }
+    }
+
+    /* 
+    {
+        "firstName": "Merilyn",
+        "lastName": "Monroo",
+        "password": "password3343"
+    }
+    */
+    async authenticate(
+        firstName: string,
+        lastName: string
+    ): Promise<User | null> {
+        const conn = await client.connect();
+        const sql = 'SELECT * FROM users WHERE first_name=($1)';
+
+        console.log('First name = ' + firstName);
+        const result = await conn.query(sql, [firstName]);
+
+        if (result.rows.length) {
+            const user = result.rows[0];
+
+            const hashedPassword = bcrypt.hashSync(
+                user.password + pepper,
+                parseInt(saltRounds)
+            );
+
+            if (bcrypt.compareSync(hashedPassword, user.password)) {
+                return user;
+            }
+        }
+
+        return null;
     }
 
     async index(): Promise<User[]> {
