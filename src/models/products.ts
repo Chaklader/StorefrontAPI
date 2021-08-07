@@ -1,13 +1,5 @@
 import client from '../database';
 
-/* 
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
-*/
-
 export type Product = {
     id?: number;
     name: string;
@@ -32,12 +24,12 @@ export class ProductStore {
         }
     }
 
-    async show(id: string): Promise<Product> {
+    async show(id: number): Promise<Product> {
         try {
             const sql = 'SELECT * FROM products WHERE id=($1)';
+
             // @ts-ignore
             const conn = await client.connect();
-
             const result = await conn.query(sql, [id]);
 
             conn.release();
@@ -55,11 +47,7 @@ export class ProductStore {
             // @ts-ignore
             const conn = await client.connect();
 
-            const result = await conn.query(sql, [
-                p.name,
-                p.price,
-                p.category,
-            ]);
+            const result = await conn.query(sql, [p.name, p.price, p.category]);
 
             const newProduct = result.rows[0];
 
@@ -67,11 +55,13 @@ export class ProductStore {
 
             return newProduct;
         } catch (err) {
-            throw new Error(`Could not add new product ${p.name} with ID ${p.id}. Error: ${err}`);
+            throw new Error(
+                `Could not add new product ${p.name} with ID ${p.id}. Error: ${err}`
+            );
         }
     }
 
-    async delete(id: string): Promise<Product> {
+    async delete(id: number): Promise<Product> {
         try {
             const sql = 'DELETE FROM products WHERE id=($1)';
             // @ts-ignore
@@ -79,11 +69,11 @@ export class ProductStore {
 
             const result = await conn.query(sql, [id]);
 
-            const book = result.rows[0];
+            const delProduct = result.rows[0];
 
             conn.release();
 
-            return book;
+            return delProduct;
         } catch (err) {
             throw new Error(`Could not delete product ${id}. Error: ${err}`);
         }

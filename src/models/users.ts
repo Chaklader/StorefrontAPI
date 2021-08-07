@@ -1,13 +1,5 @@
 import client from '../database';
 
-/* 
-#### User
-- id
-- firstName
-- lastName
-- password
-*/
-
 export type User = {
     id?: number;
     firstName: string;
@@ -32,7 +24,7 @@ export class UsersManagement {
         }
     }
 
-    async show(id: string): Promise<User> {
+    async show(id: number): Promise<User> {
         try {
             const sql = 'SELECT * FROM users WHERE id=($1)';
             // @ts-ignore
@@ -71,7 +63,7 @@ export class UsersManagement {
         }
     }
 
-    async delete(id: string): Promise<User> {
+    async delete(id: number): Promise<User> {
         try {
             const sql = 'DELETE FROM users WHERE id=($1)';
             // @ts-ignore

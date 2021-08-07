@@ -8,27 +8,21 @@ const index = async (_req: Request, res: Response) => {
     res.json(orders);
 };
 
-const show = async (req: Request, res: Response) => {
-    const order = await store.show(req.body.id);
+const show = async (_req: Request, res: Response) => {
+
+    const orderId = parseInt(_req.params.id);
+    
+    const order = await store.show(orderId);
     res.json(order);
 };
 
-/* 
-export type Order = {
-    id?: number;
-    productId: string;
-    quantity: number;
-    userId: string;
-    status: string;
-};
-*/
-const create = async (req: Request, res: Response) => {
+const create = async (_req: Request, res: Response) => {
     try {
         const order: Order = {
-            productId: req.body.productId,
-            quantity: req.body.quantity,
-            userId: req.body.userId,
-            status: req.body.status,
+            productId: _req.body.productId,
+            quantity: _req.body.quantity,
+            userId: _req.body.userId,
+            status: _req.body.status,
         };
 
         const newOrder = await store.create(order);
@@ -39,8 +33,11 @@ const create = async (req: Request, res: Response) => {
     }
 };
 
-const destroy = async (req: Request, res: Response) => {
-    const deleted = await store.delete(req.body.id);
+const destroy = async (_req: Request, res: Response) => {
+
+    const orderId = parseInt(_req.params.id);
+    
+    const deleted = await store.delete(orderId);
     res.json(deleted);
 };
 
@@ -48,7 +45,7 @@ const orderRoutes = (app: express.Application) => {
     app.get('/orders', index);
     app.get('/orders/:id', show);
     app.post('/orders', create);
-    app.delete('/orders', destroy);
+    app.delete('/orders/:id', destroy);
 };
 
 export default orderRoutes;

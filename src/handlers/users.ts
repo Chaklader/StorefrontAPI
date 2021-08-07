@@ -4,16 +4,6 @@ import jwt from 'jsonwebtoken';
 
 const userStore = new UsersManagement();
 
-// const TOK_SECRET: string = process.env.TOKEN_SECRET || '';
-
-/* 
-export type User = {
-    id?: number;
-    firstName: string;
-    lastName: string;
-    password: string;
-};
-*/
 const create = async (req: Request, res: Response) => {
     try {
         const user: User = {
@@ -91,10 +81,10 @@ const create = async (req: Request, res: Response) => {
 //     }
 // };
 
-// const destroy = async (req: Request, res: Response) => {
-//     const deleted = await userStore.delete(req.body.id);
-//     res.json(deleted);
-// };
+const destroy = async (_req: Request, res: Response) => {
+    const deleted = await userStore.delete(parseInt(_req.params.id));
+    res.json(deleted);
+};
 
 const userRoute = (app: express.Application) => {
     // app.get('/users', index);
@@ -102,9 +92,11 @@ const userRoute = (app: express.Application) => {
     // app.post('/users', verifyAuthToken, create);
     // app.put('/users/:id', verifyAuthToken, update);
     // app.delete('/users/:id', verifyAuthToken, destroy);
-
-    app.post('/users', create);
     // app.put('/users/:id', update);
+
+
+    app.delete('/users/:id', destroy);
+    app.post('/users', create);
 };
 
 export default userRoute;

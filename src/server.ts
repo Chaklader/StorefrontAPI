@@ -1,27 +1,25 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 
+import { ProductStore } from './models/products';
+
 import productRoutes from './handlers/products';
 import orderRoutes from './handlers/orders';
 import userRoute from './handlers/users';
 
-
-
-
 const app: express.Application = express();
-const address: string = "0.0.0.0:3000";
+const address: string = '0.0.0.0:3000';
 
 app.use(bodyParser.json());
-
 
 productRoutes(app);
 orderRoutes(app);
 userRoute(app);
 
 app.get('/', function (req: Request, res: Response) {
-    res.send('Hello World!')
-})
+    res.send('Hello World!');
+});
 
 app.listen(3000, function () {
-    console.log(`starting app on: ${address}`)
-})
+    console.log(`starting app on: ${address}`);
+});

@@ -3,31 +3,25 @@ import { ProductStore, Product } from '../models/products';
 
 const store = new ProductStore();
 
-/* 
-export type Product = {
-    id?: number;
-    name: string;
-    price: number;
-    category?: string;
-};
-*/
-
 const index = async (_req: Request, res: Response) => {
     const products = await store.index();
     res.json(products);
 };
 
-const show = async (req: Request, res: Response) => {
-    const product = await store.show(req.body.id);
+const show = async (_req: Request, res: Response) => {
+    
+    const productId = parseInt(_req.params.id);
+
+    const product = await store.show(productId);
     res.json(product);
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (_req: Request, res: Response) => {
     try {
         const product: Product = {
-            name: req.body.name,
-            price: req.body.price,
-            category: req.body.category,
+            name: _req.body.name,
+            price: _req.body.price,
+            category: _req.body.category,
         };
 
         const newProduct = await store.create(product);
@@ -38,17 +32,18 @@ const create = async (req: Request, res: Response) => {
     }
 };
 
-const destroy = async (req: Request, res: Response) => {
-    let productId = req.body.id;
-    const deleted = await store.delete(productId);
-    res.json(deleted);
+const destroy = async (_req: Request, res: Response) => {
+    const productId = parseInt(_req.params.id);
+    
+    const delProduct = await store.delete(productId);
+    res.json(`deleted the product with Id ${productId}`);
 };
 
 const productRoutes = (app: express.Application) => {
     app.get('/products', index);
     app.get('/products/:id', show);
     app.post('/products', create);
-    app.delete('/products', destroy);
+    app.delete('/products/:id', destroy);
 };
 
 export default productRoutes;
