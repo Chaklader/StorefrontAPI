@@ -51,11 +51,10 @@ const authenticate = async (_req: Request, res: Response) => {
             lastName: _req.body.lastName,
             password: _req.body.password,
         };
-
-        console.log("The first name is = "+ user.firstName);
         const authenticatedUser = await store.authenticate(
             user.firstName,
-            user.lastName
+            user.lastName,
+            user.password
         );
 
         if (authenticatedUser) {

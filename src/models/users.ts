@@ -1,15 +1,8 @@
 import client from '../database';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-import { json } from 'body-parser';
 
 dotenv.config();
-
-/* 
-BYCRYPT_PASSWORD=mary-had-a-little-lamb
-SALT_ROUNDS=10
-TOKEN_SECRET=mary
-*/
 
 export type User = {
     id?: number;
@@ -22,6 +15,16 @@ const pepper = process.env.BYCRYPT_PASSWORD;
 const saltRounds = '' + process.env.SALT_ROUNDS;
 
 export class UsersManagement {
+
+
+    /* 
+        Use the JSON to create an user:
+        {
+            "firstName": "Marilyn",
+            "lastName": "Monroe",
+            "password": "password"
+        }
+    */
     async create(u: User): Promise<User> {
         try {
             const hashedPassword = bcrypt.hashSync(
@@ -53,31 +56,36 @@ export class UsersManagement {
     }
 
     /* 
-    {
-        "firstName": "Merilyn",
-        "lastName": "Monroo",
-        "password": "password3343"
-    }
+    Use the JSON to autheticate an user:
+        {
+            "firstName": "Marilyn",
+            "lastName": "Monroe",
+            "password": "password"
+        }
     */
     async authenticate(
         firstName: string,
-        lastName: string
+        lastName: string,
+        password: string
     ): Promise<User | null> {
         const conn = await client.connect();
         const sql = 'SELECT * FROM users WHERE first_name=($1)';
 
-        console.log('First name = ' + firstName);
         const result = await conn.query(sql, [firstName]);
 
         if (result.rows.length) {
             const user = result.rows[0];
 
             const hashedPassword = bcrypt.hashSync(
-                user.password + pepper,
+                password + pepper,
                 parseInt(saltRounds)
             );
 
-            if (bcrypt.compareSync(hashedPassword, user.password)) {
+            console.log('\n');
+            console.log(hashedPassword + ' ' + user.password);
+            console.log('\n');
+
+            if (bcrypt.compareSync(password+pepper, user.password)) {
                 return user;
             }
         }
