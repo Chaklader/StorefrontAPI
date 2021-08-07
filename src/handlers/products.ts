@@ -1,8 +1,11 @@
 import express, { Request, Response } from 'express';
 import { ProductStore, Product } from '../models/products';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const store = new ProductStore();
-
 
 /* 
 #### Products
@@ -18,7 +21,6 @@ const index = async (_req: Request, res: Response) => {
 };
 
 const show = async (_req: Request, res: Response) => {
-    
     const productId = parseInt(_req.params.id);
 
     const product = await store.show(productId);
@@ -43,15 +45,31 @@ const create = async (_req: Request, res: Response) => {
 
 const destroy = async (_req: Request, res: Response) => {
     const productId = parseInt(_req.params.id);
-    
+
     const delProduct = await store.delete(productId);
     res.json(`deleted the product with Id ${productId}`);
+};
+
+const verifyAuthToken = (_req: Request, res: Response, next: any) => {
+    try {
+        const authorizationHeader = _req.headers.authorization + '';
+        const token = authorizationHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET + '');
+
+        next();
+    } catch (err) {
+        res.status(401);
+        res.send(
+            `Unable to create product due to invalid token with Error: ${err}`
+        );
+        return;
+    }
 };
 
 const productRoutes = (app: express.Application) => {
     app.get('/products', index);
     app.get('/products/:id', show);
-    app.post('/products', create);
+    app.post('/products', verifyAuthToken, create);
     app.delete('/products/:id', destroy);
 };
 

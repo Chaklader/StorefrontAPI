@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
 import { UsersManagement, User } from '../models/users';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const store = new UsersManagement();
 
@@ -12,6 +15,8 @@ const store = new UsersManagement();
 - Create N[token required]
 
 */
+
+const tokenSecret = process.env.TOKEN_SECRET+'';
 
 const index = async (_req: Request, res: Response) => {
     const users = await store.index();
@@ -34,8 +39,9 @@ const create = async (req: Request, res: Response) => {
         };
 
         const newUser = await store.create(user);
-        // var token = jwt.sign({ user: newUser }, TOK_SECRET);
-        res.json(newUser);
+        var token = jwt.sign({ user: newUser }, tokenSecret);
+
+        res.json(token);
     } catch (err) {
         res.status(400);
         res.json(err);
@@ -98,17 +104,21 @@ const authenticate = async (_req: Request, res: Response) => {
 //     }
 // };
 
-// const verifyAuthToken = (req: Request, res: Response, next) => {
-//     try {
-//         const authorizationHeader: string = req.headers.authorization || '';
-//         const token = authorizationHeader.split(' ')[1];
-//         const decoded: any = jwt.verify(token, TOK_SECRET);
+const verifyAuthToken = (_req: Request, res: Response, next: any) => {
+    try {
+        const authorizationHeader = _req.headers.authorization + '';
+        const token = authorizationHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET + '');
 
-//         next();
-//     } catch (error) {
-//         res.status(401);
-//     }
-// };
+        next();
+    } catch (err) {
+        res.status(401);
+        res.send(
+            `Unable to create product due to invalid token with Error: ${err}`
+        );
+        return;
+    }
+};
 
 const destroy = async (_req: Request, res: Response) => {
     const deleted = await store.delete(parseInt(_req.params.id));

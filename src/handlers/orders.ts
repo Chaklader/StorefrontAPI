@@ -1,5 +1,11 @@
 import express, { Request, Response } from 'express';
 import { OrderStore, Order } from '../models/orders';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+
+
+dotenv.config();
+
 
 const store = new OrderStore();
 
@@ -46,6 +52,22 @@ const destroy = async (_req: Request, res: Response) => {
     
     const deleted = await store.delete(orderId);
     res.json(deleted);
+};
+
+const verifyAuthToken = (_req: Request, res: Response, next: any) => {
+    try {
+        const authorizationHeader = _req.headers.authorization + '';
+        const token = authorizationHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET + '');
+
+        next();
+    } catch (err) {
+        res.status(401);
+        res.send(
+            `Unable to create product due to invalid token with Error: ${err}`
+        );
+        return;
+    }
 };
 
 const orderRoutes = (app: express.Application) => {
