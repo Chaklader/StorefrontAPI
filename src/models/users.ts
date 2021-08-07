@@ -15,8 +15,6 @@ const pepper = process.env.BYCRYPT_PASSWORD;
 const saltRounds = '' + process.env.SALT_ROUNDS;
 
 export class UsersManagement {
-
-
     /* 
         Use the JSON to create an user:
         {
@@ -69,23 +67,17 @@ export class UsersManagement {
         password: string
     ): Promise<User | null> {
         const conn = await client.connect();
-        const sql = 'SELECT * FROM users WHERE first_name=($1)';
+        const sql = 'SELECT * FROM users WHERE first_name=($1) AND last_name=($2)';
 
-        const result = await conn.query(sql, [firstName]);
+        const result = await conn.query(sql, [
+            firstName,
+            lastName
+        ]);
 
         if (result.rows.length) {
             const user = result.rows[0];
 
-            const hashedPassword = bcrypt.hashSync(
-                password + pepper,
-                parseInt(saltRounds)
-            );
-
-            console.log('\n');
-            console.log(hashedPassword + ' ' + user.password);
-            console.log('\n');
-
-            if (bcrypt.compareSync(password+pepper, user.password)) {
+            if (bcrypt.compareSync(password + pepper, user.password)) {
                 return user;
             }
         }
