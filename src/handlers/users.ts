@@ -30,8 +30,16 @@ const create = async (req: Request, res: Response) => {
         const user: User = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            password: req.body.password
+            password: req.body.password,
         };
+
+        /* 
+           const hash = bcrypt.hashSync(
+                u.password + pepper, 
+                parseInt(saltRounds)
+            );
+
+        */
 
         const newUser = await store.create(user);
         // var token = jwt.sign({ user: newUser }, TOK_SECRET);
