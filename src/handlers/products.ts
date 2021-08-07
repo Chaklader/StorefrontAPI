@@ -3,6 +3,15 @@ import { ProductStore, Product } from '../models/products';
 
 const store = new ProductStore();
 
+
+/* 
+#### Products
+- Index 
+- Show
+- Create [token required]
+- [OPTIONAL] Top 5 most popular products 
+- [OPTIONAL] Products by category (args: product category)
+*/
 const index = async (_req: Request, res: Response) => {
     const products = await store.index();
     res.json(products);

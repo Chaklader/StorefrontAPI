@@ -1,6 +1,16 @@
 # Storefront Backend Project
 
 
+# TODO: The tests are not running
+# POSTMAN colelctions
+# Run with the docker container
+
+---------------------------------------
+    $ yarn add jasmine 
+    $ yarn global add jasmine 
+    $ yarn add jasmine @types/jasmine
+---------------------------------------
+
 
 $ docker-compose up               
 

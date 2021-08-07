@@ -2,17 +2,38 @@ import express, { Request, Response } from 'express';
 import { UsersManagement, User } from '../models/users';
 import jwt from 'jsonwebtoken';
 
-const userStore = new UsersManagement();
+const store = new UsersManagement();
+
+/* 
+#### API endpoints
+#### Users
+- Index [token required]
+- Show [token required]
+- Create N[token required]
+
+*/
+
+const index = async (_req: Request, res: Response) => {
+    const users = await store.index();
+    res.json(users);
+};
+
+const show = async (_req: Request, res: Response) => {
+    const userId = parseInt(_req.params.id);
+
+    const product = await store.show(userId);
+    res.json(product);
+};
 
 const create = async (req: Request, res: Response) => {
     try {
         const user: User = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            password: req.body.password,
+            password: req.body.password
         };
 
-        const newUser = await userStore.create(user);
+        const newUser = await store.create(user);
         // var token = jwt.sign({ user: newUser }, TOK_SECRET);
         res.json(newUser);
     } catch (err) {
@@ -82,21 +103,20 @@ const create = async (req: Request, res: Response) => {
 // };
 
 const destroy = async (_req: Request, res: Response) => {
-    const deleted = await userStore.delete(parseInt(_req.params.id));
+    const deleted = await store.delete(parseInt(_req.params.id));
     res.json(deleted);
 };
 
 const userRoute = (app: express.Application) => {
-    // app.get('/users', index);
-    // app.get('/users/:id', show);
     // app.post('/users', verifyAuthToken, create);
     // app.put('/users/:id', verifyAuthToken, update);
     // app.delete('/users/:id', verifyAuthToken, destroy);
     // app.put('/users/:id', update);
 
-
-    app.delete('/users/:id', destroy);
     app.post('/users', create);
+    app.get('/users', index);
+    app.get('/users/:id', show);
+    app.delete('/users/:id', destroy);
 };
 
 export default userRoute;
