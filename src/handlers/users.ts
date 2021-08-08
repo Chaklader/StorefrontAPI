@@ -13,11 +13,13 @@ const store = new UsersManagement();
 - Index [token required]
 - Show [token required]
 - Create N[token required]
-
 */
 
 const tokenSecret = process.env.TOKEN_SECRET + '';
 
+/* 
+    create an user with first and last name, password, role and email 
+*/
 const create = async (_req: Request, res: Response) => {
     try {
         const user: User = {
@@ -95,6 +97,9 @@ const show = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    only an admin can delete an user
+*/
 const destroy = async (_req: Request, res: Response) => {
     try {
         const authorizationHeader = _req.headers.authorization + '';
@@ -125,6 +130,9 @@ const destroy = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    only the respective user can edit their own settings
+*/
 const update = async (_req: Request, res: Response) => {
     const user: User = {
         firstName: _req.body.firstName,

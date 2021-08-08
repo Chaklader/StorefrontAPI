@@ -42,6 +42,18 @@ const index = async (_req: Request, res: Response) => {
     }
 };
 
+const show = async (_req: Request, res: Response) => {
+    try {
+        const productId = parseInt(_req.params.id);
+
+        const product = await store.show(productId);
+        res.json(product);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+};
+
 //TODO: retrieve by category is not working
 const productsByCategory = async (_req: Request, res: Response) => {
     try {
@@ -57,18 +69,9 @@ const productsByCategory = async (_req: Request, res: Response) => {
     }
 };
 
-const show = async (_req: Request, res: Response) => {
-    try {
-        const productId = parseInt(_req.params.id);
-
-        const product = await store.show(productId);
-        res.json(product);
-    } catch (err) {
-        res.status(400);
-        res.json(err);
-    }
-};
-
+/* 
+    only an admin can delete an product
+*/
 const destroy = async (_req: Request, res: Response) => {
     try {
         const authorizationHeader = _req.headers.authorization + '';
@@ -121,10 +124,10 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
 };
 
 const productRoutes = (app: express.Application) => {
+    app.post('/products', verifyAuthToken, create);
     app.get('/products', index);
     app.get('/products/:id', show);
     app.get('/products/:category', productsByCategory);
-    app.post('/products', verifyAuthToken, create);
     app.delete('/products/:id', destroy);
 };
 

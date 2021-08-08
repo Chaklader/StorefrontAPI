@@ -13,12 +13,41 @@ const store = new OrderStore();
 - Current Order by user (args: user id)[token required]
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 */
+
+/* 
+    an order can only be created by the respective user after the token validation
+*/
 const create = async (_req: Request, res: Response) => {
     try {
         const order: Order = {
             userId: _req.body.userId,
             status: _req.body.status,
         };
+
+        /* 
+            Noone but the respective user can create their own order
+        */
+        try {
+            const authorizationHeader = _req.headers.authorization + '';
+            const token = authorizationHeader.split(' ')[1];
+
+            const decoded: any = jwt.verify(
+                token,
+                process.env.TOKEN_SECRET + ''
+            );
+
+            if (decoded.user.id != order.userId) {
+                throw new Error(
+                    'Only the respective user can create their own order...'
+                );
+            }
+        } catch (err) {
+            res.status(401);
+            res.send(
+                `Unable to create order due to invalid token with Error: ${err}`
+            );
+            return;
+        }
 
         const newOrder = await store.create(order);
         res.json(newOrder);
@@ -28,25 +57,56 @@ const create = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    only the respective user will be able to add more products to their order 
+    after the token validation...
+*/
 const addProduct = async (_req: Request, res: Response) => {
-    try {
-        const quantity = parseInt(_req.body.quantity);
-        const productId = _req.body.productId;
-        const orderId = _req.body.orderId;
+    const orderId: number = parseInt(_req.params.orderId);
+    const userId: number = parseInt(_req.params.userId);
 
-        const newOrderProducts = await store.addProduct(
+    const productId: number = _req.body.productId;
+    const quantity: number = parseInt(_req.body.quantity);
+
+    /* 
+        Noone but the respective user can create their own order
+    */
+    try {
+        const authorizationHeader = _req.headers.authorization + '';
+        const token = authorizationHeader.split(' ')[1];
+
+        const decoded: any = jwt.verify(token, process.env.TOKEN_SECRET + '');
+
+        if (decoded.user.id != userId) {
+            throw new Error(
+                'Only the respective user can create their own order...'
+            );
+        }
+    } catch (err) {
+        res.status(401);
+        res.send(
+            `Unable to create order due to invalid token with Error: ${err}`
+        );
+        return;
+    }
+
+    try {
+        const addedProduct = await store.addProduct(
             quantity,
             orderId,
             productId
         );
 
-        res.json(newOrderProducts);
+        res.json(addedProduct);
     } catch (err) {
         res.status(400);
         res.json(err);
     }
 };
 
+/* 
+    any autheticated user can see all the orders 
+*/
 const index = async (_req: Request, res: Response) => {
     try {
         const orders = await store.index();
@@ -69,9 +129,40 @@ const show = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    only the respective user can delete their own order
+*/
 const destroy = async (_req: Request, res: Response) => {
     try {
         const orderId = parseInt(_req.params.id);
+        const order = await store.show(orderId);
+
+        /* 
+            Noone but the respective user can create their own order
+        */
+        try {
+            const authorizationHeader = _req.headers.authorization + '';
+            const token = authorizationHeader.split(' ')[1];
+
+            const decoded: any = jwt.verify(
+                token,
+                process.env.TOKEN_SECRET + ''
+            );
+
+            const uId = JSON.parse(JSON.stringify(order)).user_id;
+
+            if (decoded.user.id != uId) {
+                throw new Error(
+                    'only the respective user can delete their own order ..'
+                );
+            }
+        } catch (err) {
+            res.status(401);
+            res.send(
+                `Unable to delete order due to invalid token with Error: ${err}`
+            );
+            return;
+        }
 
         const deleted = await store.delete(orderId);
         res.json(deleted);
@@ -91,17 +182,18 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
     } catch (err) {
         res.status(401);
         res.send(
-            `Unable to create product due to invalid token with Error: ${err}`
+            `Unable to create order due to invalid token with Error: ${err}`
         );
         return;
     }
 };
 
 const orderRoutes = (app: express.Application) => {
-    app.get('/orders', index);
-    app.get('/orders/:id', show);
     app.post('/orders', create);
-    app.post('/orders/:id/products', addProduct);
+    app.post('/users/:userID/orders/:orderID/products', addProduct);
+    app.get('/orders', verifyAuthToken, index);
+    app.get('/orders/:id', verifyAuthToken, show);
+
     app.delete('/orders/:id', destroy);
 };
 
