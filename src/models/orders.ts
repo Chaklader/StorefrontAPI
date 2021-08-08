@@ -39,12 +39,11 @@ export class OrderStore {
             check if the orer status is "open" so we can add products to the respective order
         */
         try {
-            const ordersql = 'SELECT * FROM orders WHERE id=($1)';
+            const sql = 'SELECT * FROM orders WHERE id=($1)';
             //@ts-ignore
-            const conn = await Client.connect();
+            const conn = await client.connect();
 
-            const result = await conn.query(ordersql, [orderId]);
-
+            const result = await conn.query(sql, [orderId]);
             const order = result.rows[0];
 
             if (order.status !== 'open') {
@@ -73,10 +72,10 @@ export class OrderStore {
                 productId,
             ]);
 
-            const order = result.rows[0];
+            const orderProduct = result.rows[0];
             conn.release();
 
-            return order;
+            return orderProduct;
         } catch (err) {
             throw new Error(
                 `Could not add order with ID ${orderId}. Error: ${err}`

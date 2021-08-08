@@ -61,10 +61,13 @@ const create = async (_req: Request, res: Response) => {
     only the respective user will be able to add more products to their order 
     after the token validation...
 */
+// TODO: check if the order_products table is populated ...
 const addProduct = async (_req: Request, res: Response) => {
+    // params
     const orderId: number = parseInt(_req.params.orderId);
     const userId: number = parseInt(_req.params.userId);
 
+    // payload
     const productId: number = _req.body.productId;
     const quantity: number = parseInt(_req.body.quantity);
 
@@ -91,13 +94,13 @@ const addProduct = async (_req: Request, res: Response) => {
     }
 
     try {
-        const addedProduct = await store.addProduct(
+        const orderProduct = await store.addProduct(
             quantity,
             orderId,
             productId
         );
 
-        res.json(addedProduct);
+        res.json(orderProduct);
     } catch (err) {
         res.status(400);
         res.json(err);
@@ -117,6 +120,9 @@ const index = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    any autheticated user can find an order by its ID
+*/
 const show = async (_req: Request, res: Response) => {
     try {
         const orderId = parseInt(_req.params.id);
@@ -190,7 +196,7 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
 
 const orderRoutes = (app: express.Application) => {
     app.post('/orders', create);
-    app.post('/users/:userID/orders/:orderID/products', addProduct);
+    app.post('/users/:userId/orders/:orderId/products', addProduct);
     app.get('/orders', verifyAuthToken, index);
     app.get('/orders/:id', verifyAuthToken, show);
 
