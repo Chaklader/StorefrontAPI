@@ -3,9 +3,7 @@ import { OrderStore, Order } from '../models/orders';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
-
 dotenv.config();
-
 
 const store = new OrderStore();
 
@@ -22,9 +20,8 @@ const index = async (_req: Request, res: Response) => {
 };
 
 const show = async (_req: Request, res: Response) => {
-
     const orderId = parseInt(_req.params.id);
-    
+
     const order = await store.show(orderId);
     res.json(order);
 };
@@ -47,11 +44,28 @@ const create = async (_req: Request, res: Response) => {
 };
 
 const destroy = async (_req: Request, res: Response) => {
-
     const orderId = parseInt(_req.params.id);
-    
+
     const deleted = await store.delete(orderId);
     res.json(deleted);
+};
+
+const addProduct = async (_req: Request, res: Response) => {
+    try {
+        const quantity = parseInt(_req.body.quantity);
+        const productId = _req.body.productId;
+        const orderId = _req.body.orderId;
+
+        const newOrderToOrderProductsTable = await store.addOrder(
+            quantity,
+            orderId,
+            productId
+        );
+        res.json(newOrderToOrderProductsTable);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
 };
 
 const verifyAuthToken = (_req: Request, res: Response, next: any) => {
@@ -74,6 +88,7 @@ const orderRoutes = (app: express.Application) => {
     app.get('/orders', index);
     app.get('/orders/:id', show);
     app.post('/orders', create);
+    app.post('/orders/:id/products', addProduct);
     app.delete('/orders/:id', destroy);
 };
 
