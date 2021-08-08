@@ -24,6 +24,8 @@ const create = async (_req: Request, res: Response) => {
             firstName: _req.body.firstName,
             lastName: _req.body.lastName,
             password: _req.body.password,
+            role: _req.body.role,
+            email: _req.body.email,
         };
 
         const newUser = await store.create(user);
@@ -36,29 +38,22 @@ const create = async (_req: Request, res: Response) => {
     }
 };
 
-const isUserAuthenticated = async (_req: Request, res: Response) => {
+const login = async (_req: Request, res: Response) => {
     try {
-        const user: User = {
-            firstName: _req.body.firstName,
-            lastName: _req.body.lastName,
-            password: _req.body.password,
-        };
-        const authenticatedUser = await store.authenticate(
-            user.firstName,
-            user.lastName,
-            user.password
-        );
+        const email = _req.body.email;
+        const password = _req.body.password;
 
-        if (authenticatedUser) {
-            return res.json('user is autheticated');
+        const isRegistered: User | null = await store.login(email, password);
+
+        if (isRegistered) {
+            var token = jwt.sign({ user: isRegistered }, tokenSecret);
+            res.json(token);
+
+            return;
         }
 
         return res.json(
-            '\
-        {\
-            "isAuthenticated: "true";\
-        }\
-        '
+            "We don't find an user with the email provided. Please, sign up to the store ..."
         );
     } catch (error) {
         res.status(401);
@@ -67,29 +62,66 @@ const isUserAuthenticated = async (_req: Request, res: Response) => {
 };
 
 const index = async (_req: Request, res: Response) => {
-    const users = await store.index();
-    res.json(users);
+    try {
+        const users = await store.index();
+        res.json(users);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
 };
 
 const show = async (_req: Request, res: Response) => {
-    const userId = parseInt(_req.params.id);
+    try {
+        const userId = parseInt(_req.params.id);
 
-    const product = await store.show(userId);
-    res.json(product);
+        const product = await store.show(userId);
+        res.json(product);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
 };
 
+const destroy = async (_req: Request, res: Response) => {
+    try {
+        const authorizationHeader = _req.headers.authorization + '';
+        const token = authorizationHeader.split(' ')[1];
 
-/* 
-    Usually, an admin will have the priviledges for the user info update. 
-    For simplicity, we will allow update user settting to the user that has
-    created it.
-*/
+        const decoded: any = jwt.verify(token, tokenSecret);
+
+        if (decoded.role != 'ADMIN') {
+            throw new Error('Sorry, noone but an admin can delete an  user...');
+        }
+    } catch (err) {
+        res.status(401);
+        res.send(
+            `Unable to delete user due to invalid token with Error: ${err}`
+        );
+        return;
+    }
+
+    try {
+        const userId = parseInt(_req.params.id);
+        const deleted = await store.delete(userId);
+
+        res.json(deleted);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+};
+
 const update = async (_req: Request, res: Response) => {
     const user: User = {
         firstName: _req.body.firstName,
         lastName: _req.body.lastName,
-        password: _req.body.password
+        password: _req.body.password,
+        role: _req.body.role,
+        email: _req.body.email,
     };
+
+    // user settings can be only updated by the respective user
     try {
         const authorizationHeader = _req.headers.authorization + '';
         const token = authorizationHeader.split(' ')[1];
@@ -97,41 +129,32 @@ const update = async (_req: Request, res: Response) => {
         const decoded: any = jwt.verify(token, tokenSecret);
 
         if (decoded.id !== user.id) {
-            throw new Error('User id does not match!');
+            throw new Error(
+                "Sorry, you can't change anyone else settings. Goodbye!!!"
+            );
         }
     } catch (err) {
         res.status(401);
         res.json(err);
+
         return;
     }
 
     try {
-        const updated = await store.create(user);
-        res.json(updated);
+        const updatedUser = await store.update(user);
+        res.json(updatedUser);
     } catch (err) {
         res.status(400);
         res.json(err + user);
     }
 };
 
-
-const verifyAuthToken = (_req: Request, res: Response, next: any) => {
-
-    const user: User = {
-        firstName: _req.body.firstName,
-        lastName: _req.body.lastName,
-        password: _req.body.password
-    };
+const verifyToken = (_req: Request, res: Response, next: any) => {
     try {
         const authorizationHeader = _req.headers.authorization + '';
         const token = authorizationHeader.split(' ')[1];
 
         const decoded: any = jwt.verify(token, tokenSecret);
-
-        // if (decoded.id !== user.id) {
-        //     throw new Error('User id does not match!');
-        // }
-
         next();
     } catch (err) {
         res.status(401);
@@ -142,18 +165,14 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
     }
 };
 
-const destroy = async (_req: Request, res: Response) => {
-    const deleted = await store.delete(parseInt(_req.params.id));
-    res.json(deleted);
-};
-
 const userRoute = (app: express.Application) => {
-    app.post('/users', create);
-    // app.post('/users/authenticate', isUserAuthenticated);
+    app.post('/users/signup', create);
+    app.post('/users/login', login);
 
-    app.get('/users', isUserAuthenticated, index);
-    app.get('/users/:id', isUserAuthenticated, show);
-    app.delete('/users/:id', isUserAuthenticated, destroy);
+    app.get('/users', verifyToken, index);
+    app.get('/users/:id', verifyToken, show);
+    app.put('/users/:id', update);
+    app.delete('/users/:id', destroy);
 };
 
 export default userRoute;

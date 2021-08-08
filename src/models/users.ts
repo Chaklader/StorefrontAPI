@@ -9,20 +9,14 @@ export type User = {
     firstName: string;
     lastName: string;
     password: string;
+    role: string;
+    email: string;
 };
 
 const pepper = process.env.BYCRYPT_PASSWORD;
 const saltRounds = '' + process.env.SALT_ROUNDS;
 
 export class UsersManagement {
-    /* 
-        Use the JSON to create an user:
-        {
-            "firstName": "Marilyn",
-            "lastName": "Monroe",
-            "password": "password"
-        }
-    */
     async create(u: User): Promise<User> {
         try {
             const hashedPassword = bcrypt.hashSync(
@@ -31,7 +25,7 @@ export class UsersManagement {
             );
 
             const sql =
-                'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
+                'INSERT INTO users (first_name, last_name, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
             // @ts-ignore
             const conn = await client.connect();
 
@@ -53,26 +47,38 @@ export class UsersManagement {
         }
     }
 
-    /* 
-    Use the JSON to autheticate an user:
-        {
-            "firstName": "Marilyn",
-            "lastName": "Monroe",
-            "password": "password"
-        }
-    */
-    async authenticate(
-        firstName: string,
-        lastName: string,
-        password: string
-    ): Promise<User | null> {
-        const conn = await client.connect();
-        const sql = 'SELECT * FROM users WHERE first_name=($1) AND last_name=($2)';
+    async update(u: User): Promise<User> {
+        try {
+            const sql =
+                'UPDATE users SET first_name=($1), last_name=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
+            // @ts-ignore
+            const conn = await client.connect();
 
-        const result = await conn.query(sql, [
-            firstName,
-            lastName
-        ]);
+            const result = await conn.query(sql, [
+                u.firstName,
+                u.lastName,
+                u.password,
+                u.role,
+                u.email,
+                u.id,
+            ]);
+
+            const updatedUser = result.rows[0];
+            conn.release();
+
+            return updatedUser;
+        } catch (err) {
+            throw new Error(
+                `Could not updated user with name ${u.firstName} ${u.lastName}. Error: ${err}`
+            );
+        }
+    }
+
+    async login(email: string, password: string): Promise<User | null> {
+        const conn = await client.connect();
+        const sql = 'SELECT * FROM users WHERE email=($1)';
+
+        const result = await conn.query(sql, [email]);
 
         if (result.rows.length) {
             const user = result.rows[0];

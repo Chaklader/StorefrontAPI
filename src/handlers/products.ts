@@ -15,18 +15,6 @@ const store = new ProductStore();
 - [OPTIONAL] Top 5 most popular products 
 - [OPTIONAL] Products by category (args: product category)
 */
-const index = async (_req: Request, res: Response) => {
-    const products = await store.index();
-    res.json(products);
-};
-
-const show = async (_req: Request, res: Response) => {
-    const productId = parseInt(_req.params.id);
-
-    const product = await store.show(productId);
-    res.json(product);
-};
-
 const create = async (_req: Request, res: Response) => {
     try {
         const product: Product = {
@@ -43,11 +31,38 @@ const create = async (_req: Request, res: Response) => {
     }
 };
 
-const destroy = async (_req: Request, res: Response) => {
-    const productId = parseInt(_req.params.id);
+const index = async (_req: Request, res: Response) => {
+    try {
+        const products = await store.index();
+        res.json(products);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+};
 
-    const delProduct = await store.delete(productId);
-    res.json(`deleted the product with Id ${productId}`);
+const show = async (_req: Request, res: Response) => {
+    try {
+        const productId = parseInt(_req.params.id);
+
+        const product = await store.show(productId);
+        res.json(product);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+};
+
+const destroy = async (_req: Request, res: Response) => {
+    try {
+        const productId = parseInt(_req.params.id);
+
+        const delProduct = await store.delete(productId);
+        res.json(`deleted the product with Id ${productId}`);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
 };
 
 const verifyAuthToken = (_req: Request, res: Response, next: any) => {

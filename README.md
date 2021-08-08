@@ -12,6 +12,14 @@
 ---------------------------------------
 
 
+    {
+        "firstName": "Marilyn",
+        "lastName": "Monroe",
+        "password": "password",
+        "role": "ADMIN", 
+        "email": "m.monroe@gmail.com"
+    }
+
 $ docker-compose up               
 
 <!-- to enter the bash terminal of the container -->
