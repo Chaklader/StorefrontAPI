@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
+const tokenSecret = process.env.TOKEN_SECRET + '';
 
 const store = new ProductStore();
 
@@ -41,6 +42,18 @@ const index = async (_req: Request, res: Response) => {
     }
 };
 
+const productsByCategory = async (_req: Request, res: Response) => {
+    try {
+        const cgry = _req.params.category;
+        const products = await store.productsByCategory(cgry);
+
+        res.json(products);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+};
+
 const show = async (_req: Request, res: Response) => {
     try {
         const productId = parseInt(_req.params.id);
@@ -54,6 +67,23 @@ const show = async (_req: Request, res: Response) => {
 };
 
 const destroy = async (_req: Request, res: Response) => {
+    try {
+        const authorizationHeader = _req.headers.authorization + '';
+        const token = authorizationHeader.split(' ')[1];
+
+        const decoded: any = jwt.verify(token, tokenSecret);
+
+        if (decoded.role != 'ADMIN' || decoded.role != 'admin') {
+            throw new Error('Sorry, only an admin can delete a product.');
+        }
+    } catch (err) {
+        res.status(401);
+        res.send(
+            `Unable to delete product due to invalid token with Error: ${err}`
+        );
+        return;
+    }
+
     try {
         const productId = parseInt(_req.params.id);
 
@@ -69,7 +99,13 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
     try {
         const authorizationHeader = _req.headers.authorization + '';
         const token = authorizationHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.TOKEN_SECRET + '');
+        const decoded: any = jwt.verify(token, process.env.TOKEN_SECRET + '');
+
+        const userRole = decoded.user.role;
+
+        if (userRole != 'ADMIN') {
+            throw new Error('Only an admin can create a product...');
+        }
 
         next();
     } catch (err) {
@@ -84,6 +120,7 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
 const productRoutes = (app: express.Application) => {
     app.get('/products', index);
     app.get('/products/:id', show);
+    app.get('/products/:category', productsByCategory);
     app.post('/products', verifyAuthToken, create);
     app.delete('/products/:id', destroy);
 };

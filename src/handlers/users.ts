@@ -89,8 +89,9 @@ const destroy = async (_req: Request, res: Response) => {
         const token = authorizationHeader.split(' ')[1];
 
         const decoded: any = jwt.verify(token, tokenSecret);
+        const userRole = decoded.user.role;
 
-        if (decoded.role != 'ADMIN') {
+        if (userRole != 'ADMIN') {
             throw new Error('Sorry, noone but an admin can delete an  user...');
         }
     } catch (err) {

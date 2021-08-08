@@ -19,20 +19,28 @@ const saltRounds = '' + process.env.SALT_ROUNDS;
 export class UsersManagement {
     async create(u: User): Promise<User> {
         try {
-            const hashedPassword = bcrypt.hashSync(
-                u.password + pepper,
-                parseInt(saltRounds)
-            );
-
             const sql =
                 'INSERT INTO users (first_name, last_name, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
             // @ts-ignore
             const conn = await client.connect();
 
+            console.log(
+                u.firstName +
+                    ' ' +
+                    u.lastName +
+                    ' ' +
+                    u.password +
+                    ' ' +
+                    u.role +
+                    ' ' +
+                    u.email
+            );
             const result = await conn.query(sql, [
                 u.firstName,
                 u.lastName,
-                hashedPassword,
+                u.password,
+                u.role,
+                u.email,
             ]);
 
             const newUser = result.rows[0];
