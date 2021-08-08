@@ -66,6 +66,36 @@ export class OrderStore {
         }
     }
 
+    async addOrder(
+        quantity: number,
+        orderId: number,
+        productId: number
+    ): Promise<Order> {
+        try {
+            const sql =
+                'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *';
+
+            // @ts-ignore
+            const conn = await client.connect();
+
+            const result = await conn.query(sql, [
+                quantity,
+                orderId,
+                productId,
+            ]);
+
+            const order = result.rows[0];
+
+            conn.release();
+
+            return order;
+        } catch (err) {
+            throw new Error(
+                `Could not add order with ID ${orderId}. Error: ${err}`
+            );
+        }
+    }
+
     async delete(id: number): Promise<Order> {
         try {
             const sql = 'DELETE FROM orders WHERE id=($1)';
@@ -84,4 +114,3 @@ export class OrderStore {
         }
     }
 }
-
