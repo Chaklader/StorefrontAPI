@@ -38,6 +38,11 @@ const create = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    we will find the user based on provided email and then will match with the hased password.
+    If we see a match, we will decide that this is correct login and will provide JWT token
+    than can use used for prividelged operations.
+*/
 const login = async (_req: Request, res: Response) => {
     try {
         const email = _req.body.email;
@@ -61,6 +66,10 @@ const login = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    We will need token to see all the users,but, doesn't require 'ADMIN' priviledges.
+    So, generally any use can see/ find all the users in the app
+*/
 const index = async (_req: Request, res: Response) => {
     try {
         const users = await store.index();
@@ -71,6 +80,9 @@ const index = async (_req: Request, res: Response) => {
     }
 };
 
+/* 
+    we will need token to see user by ID,but, doesn't require 'ADMIN' priviledges
+*/
 const show = async (_req: Request, res: Response) => {
     try {
         const userId = parseInt(_req.params.id);
@@ -129,20 +141,20 @@ const update = async (_req: Request, res: Response) => {
 
         const decoded: any = jwt.verify(token, tokenSecret);
 
-        if (decoded.id !== user.id) {
+        if (decoded.user.id != _req.params.id) {
             throw new Error(
                 "Sorry, you can't change anyone else settings. Goodbye!!!"
             );
         }
     } catch (err) {
         res.status(401);
-        res.json(err);
+        res.json(`Unable to update an user with error ${err}`);
 
         return;
     }
 
     try {
-        const updatedUser = await store.update(user);
+        const updatedUser = await store.update(user, parseInt(_req.params.id));
         res.json(updatedUser);
     } catch (err) {
         res.status(400);

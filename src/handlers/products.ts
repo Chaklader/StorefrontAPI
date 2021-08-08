@@ -42,9 +42,12 @@ const index = async (_req: Request, res: Response) => {
     }
 };
 
+//TODO: retrieve by category is not working
 const productsByCategory = async (_req: Request, res: Response) => {
     try {
         const cgry = _req.params.category;
+        console.log('Category is =' + cgry);
+
         const products = await store.productsByCategory(cgry);
 
         res.json(products);

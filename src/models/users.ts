@@ -24,21 +24,15 @@ export class UsersManagement {
             // @ts-ignore
             const conn = await client.connect();
 
-            console.log(
-                u.firstName +
-                    ' ' +
-                    u.lastName +
-                    ' ' +
-                    u.password +
-                    ' ' +
-                    u.role +
-                    ' ' +
-                    u.email
+            const hashedPassword = bcrypt.hashSync(
+                u.password + pepper,
+                parseInt(saltRounds)
             );
+
             const result = await conn.query(sql, [
                 u.firstName,
                 u.lastName,
-                u.password,
+                hashedPassword,
                 u.role,
                 u.email,
             ]);
@@ -55,7 +49,7 @@ export class UsersManagement {
         }
     }
 
-    async update(u: User): Promise<User> {
+    async update(u: User, userId: number): Promise<User> {
         try {
             const sql =
                 'UPDATE users SET first_name=($1), last_name=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
@@ -68,7 +62,7 @@ export class UsersManagement {
                 u.password,
                 u.role,
                 u.email,
-                u.id,
+                userId,
             ]);
 
             const updatedUser = result.rows[0];
@@ -92,8 +86,11 @@ export class UsersManagement {
             const user = result.rows[0];
 
             if (bcrypt.compareSync(password + pepper, user.password)) {
+                console.log('yes');
                 return user;
             }
+
+            console.log('no..');
         }
 
         return null;
