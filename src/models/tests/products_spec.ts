@@ -2,6 +2,17 @@ import { ProductStore, Product } from '../products';
 
 const store = new ProductStore();
 
+
+/* 
+## Product data scheme
+
+export type Product = {
+    id?: number;
+    name: string;
+    price: number;
+    category?: string;
+};
+*/
 describe('Product Model', () => {
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
@@ -23,20 +34,20 @@ describe('Product Model', () => {
         expect(store.index).toBeDefined();
     });
 
-    // it('create method should add a product', async () => {
-    //     const result = await store.create({
-    //         id: 1,
-    //         name: 'War and Peace',
-    //         price: 250.25,
-    //         category: 'Literature',
-    //     });
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         name: 'War and Peace',
-    //         price: 250.25,
-    //         category: 'Literature',
-    //     });
-    // });
+    it('create method should add a product', async () => {
+        const result = await store.create({
+            id: 1,
+            name: 'War and Peace',
+            price: 250.25,
+            category: 'Literature',
+        });
+        expect(result).toEqual({
+            id: 1,
+            name: 'War and Peace',
+            price: 250.25,
+            category: 'Literature',
+        });
+    });
 
     // it('index method should return a list of books', async () => {
     //     const result = await store.index();
