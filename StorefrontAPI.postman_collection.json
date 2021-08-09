@@ -1,0 +1,1363 @@
+{
+	"info": {
+		"_postman_id": "0ff9bdc9-0376-417a-9296-2c2aa04df5df",
+		"name": "StorefrontAPI",
+		"description": "This is the API requests for the Strorefront API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create an order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMSwiZmlyc3RfbmFtZSI6Im1lcmxpb24iLCJsYXN0X25hbWUiOiJtb25yb2UiLCJwYXNzd29yZCI6IiQyYiQxMCRCd3h3eURlQU12Qm5jaDNwLnZ5WU1lbXFVRHU2S1dDdHJtZXFMeEtNTnAwekg3ZVBsN0pjUyIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0NDA2Mjl9.WQwUx7X5yU1XAvhdfsBAQRxdyAlXV22Cc-zCtmXli5A",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 11,\n    \"status\": \"open\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create an order",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMSwiZmlyc3RfbmFtZSI6Im1lcmxpb24iLCJsYXN0X25hbWUiOiJtb25yb2UiLCJwYXNzd29yZCI6IiQyYiQxMCRCd3h3eURlQU12Qm5jaDNwLnZ5WU1lbXFVRHU2S1dDdHJtZXFMeEtNTnAwekg3ZVBsN0pjUyIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0MzU0MTB9.IZWlDc5D8PFA2H7cyFFfMNhQz_BIxy7rnp2vof9VD2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": 11,\n    \"status\": \"open\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-911VVWuJl1GqI1DErNJwJdXjgqI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 15:11:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"status\": \"open\",\n    \"user_id\": \"11\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Index all order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoicGFzc3dvcmRfdXBkYXRlZCIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0MjU5MjZ9.pdLsKHiqvixgnuuNaU8amQ4B8gQON-LklYUzhZJzOr0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show an order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoicGFzc3dvcmRfdXBkYXRlZCIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0MjU5MjZ9.pdLsKHiqvixgnuuNaU8amQ4B8gQON-LklYUzhZJzOr0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Show an order",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoicGFzc3dvcmRfdXBkYXRlZCIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0MjU5MjZ9.pdLsKHiqvixgnuuNaU8amQ4B8gQON-LklYUzhZJzOr0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/orders/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-911VVWuJl1GqI1DErNJwJdXjgqI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 16:22:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"status\": \"open\",\n    \"user_id\": \"11\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete an order",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMSwiZmlyc3RfbmFtZSI6Im1lcmxpb24iLCJsYXN0X25hbWUiOiJtb25yb2UiLCJwYXNzd29yZCI6IiQyYiQxMCRCd3h3eURlQU12Qm5jaDNwLnZ5WU1lbXFVRHU2S1dDdHJtZXFMeEtNTnAwekg3ZVBsN0pjUyIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0NDA2Mjl9.WQwUx7X5yU1XAvhdfsBAQRxdyAlXV22Cc-zCtmXli5A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete an order",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMSwiZmlyc3RfbmFtZSI6Im1lcmxpb24iLCJsYXN0X25hbWUiOiJtb25yb2UiLCJwYXNzd29yZCI6IiQyYiQxMCRCd3h3eURlQU12Qm5jaDNwLnZ5WU1lbXFVRHU2S1dDdHJtZXFMeEtNTnAwekg3ZVBsN0pjUyIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0NDA2Mjl9.WQwUx7X5yU1XAvhdfsBAQRxdyAlXV22Cc-zCtmXli5A",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/orders/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 16:50:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Add products to an order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMSwiZmlyc3RfbmFtZSI6Im1lcmxpb24iLCJsYXN0X25hbWUiOiJtb25yb2UiLCJwYXNzd29yZCI6IiQyYiQxMCRCd3h3eURlQU12Qm5jaDNwLnZ5WU1lbXFVRHU2S1dDdHJtZXFMeEtNTnAwekg3ZVBsN0pjUyIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0NDE5OTB9.xX_bg34EXGFjkrIMrkAGRNeYgv9Hlk4bpthbKIxTwzQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"quantity\": \"20\",\n    \"productId\":\"6\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/11/orders/4/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"11",
+								"orders",
+								"4",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create a product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6InBhc3N3b3JkIiwicm9sZSI6IkFETUlOIiwiZW1haWwiOiJvbWkuY2hha2xhZGVyQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0MjMyNTh9.NnrVRqqJarArOKd-daQvT9v6NoYSdnYpGg0g5f_FtKw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"product8\" ,\n    \"price\": 150.56,\n    \"category\": \"category6\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create a product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6InBhc3N3b3JkIiwicm9sZSI6IkFETUlOIiwiZW1haWwiOiJvbWkuY2hha2xhZGVyQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0MjMyNTh9.NnrVRqqJarArOKd-daQvT9v6NoYSdnYpGg0g5f_FtKw",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"product6\" ,\n    \"price\": 888.56,\n    \"category\": \"category6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"products"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "66"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"42-yDfa1aDAHyzKlC8ORBds6AgQSEc\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 12:21:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 6,\n    \"name\": \"product6\",\n    \"price\": \"888.56\",\n    \"category\": \"category6\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Index all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show a product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show products by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/products/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/products/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Products by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/products/category/category6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products",
+								"category",
+								"category6"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Show Products by category",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/products/category/category6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"products",
+										"category",
+										"category6"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "135"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"87-wKjpDGsQbvGhcJCyO+cticP8QgY\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Aug 2021 01:16:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 6,\n        \"name\": \"product6\",\n        \"price\": \"888.56\",\n        \"category\": \"category6\"\n    },\n    {\n        \"id\": 8,\n        \"name\": \"product8\",\n        \"price\": \"150.56\",\n        \"category\": \"category6\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create an user (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"chaklader\",\n    \"lastName\": \"arefe\",\n    \"password\": \"password\",\n    \"role\": \"ADMIN\",\n    \"email\": \"omi.chaklader@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"signup"
+							]
+						},
+						"description": "This will create an user with the required information.  The role field is important as certain operations can only be done as an 'ADMIN'. So, it will be wise to create multiple users with and without 'ADMIN' role for the testing purpose."
+					},
+					"response": [
+						{
+							"name": "Create an user (ADMIN)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"chaklader\",\n    \"lastName\": \"arefe\",\n    \"password\": \"password\",\n    \"role\": \"ADMIN\",\n    \"email\": \"omi.chaklader@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/signup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"signup"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "283"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"11b-CXARnx+vHOsrcHhagWIkaSbo6GM\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 12:31:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDI2NzE1fQ.yfxCQKdr3tZVDmHiT8hC-IpfB6v0McxsX7J-fXSBokA\""
+						}
+					]
+				},
+				{
+					"name": "Login an user (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"password\",\n    \"email\": \"omi.chaklader@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						},
+						"description": "This will create an user with the required information.  The role field is important as certain operations can only be done as an 'ADMIN'. So, it will be wise to create multiple users with and without 'ADMIN' role for the testing purpose."
+					},
+					"response": [
+						{
+							"name": "Login an user (ADMIN)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"password\",\n    \"email\": \"omi.chaklader@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "353"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"161-VJN4mwUVYfhzqe/CzcpGwkoLHhk\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 16:35:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDQwNTI3fQ.RhcxdN8lGyMSuwPrtbZXVfL_ocbOZ_TGZ9vwshdMNoc\""
+						}
+					]
+				},
+				{
+					"name": "Create an user (COMMUNITY)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"merlion\",\n    \"lastName\": \"monroe\",\n    \"password\": \"password_updated\",\n    \"role\": \"COMMUNITY\",\n    \"email\": \"m.monroe@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create an user (COMMUNITY)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"merlion\",\n    \"lastName\": \"monroe\",\n    \"password\": \"password_updated\",\n    \"role\": \"COMMUNITY\",\n    \"email\": \"m.monroe@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/signup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"signup"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "291"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"123-fJ2HVY3UmF05vWOg8m3rK/fWBDI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 12:32:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoiJDJiJDEwJHdQL1BqTzZVTE4zMmZpY0o4dDV1QU85Q1lrMEJ6RTcybHpmRTZITVFRS0IvVzRYZzdlSTl5Iiwicm9sZSI6IkNPTU1VTklUWSIsImVtYWlsIjoibS5tb25yb2VAZ21haWwuY29tIn0sImlhdCI6MTYyODQzMzI3NH0.l5cLx1ejK1qtsqqOWfPIMdycvcX7y_C-9Dw8Flj4TzM\""
+						}
+					]
+				},
+				{
+					"name": "Login an user (COMMUNITY) ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"merlion\",\n    \"lastName\": \"monroe\",\n    \"password\": \"password_updated\",\n    \"role\": \"COMMUNITY\",\n    \"email\": \"m.monroe@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login an user (COMMUNITY) ",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"password_updated\",\n    \"email\": \"m.monroe@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "351"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15f-tNTFxSc14tp3MUtObmAq0u5NP0E\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 16:37:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMSwiZmlyc3RfbmFtZSI6Im1lcmxpb24iLCJsYXN0X25hbWUiOiJtb25yb2UiLCJwYXNzd29yZCI6IiQyYiQxMCRCd3h3eURlQU12Qm5jaDNwLnZ5WU1lbXFVRHU2S1dDdHJtZXFMeEtNTnAwekg3ZVBsN0pjUyIsInJvbGUiOiJDT01NVU5JVFkiLCJlbWFpbCI6Im0ubW9ucm9lQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Mjg0NDA2Mjl9.WQwUx7X5yU1XAvhdfsBAQRxdyAlXV22Cc-zCtmXli5A\""
+						}
+					]
+				},
+				{
+					"name": "Index all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDI2NzE1fQ.yfxCQKdr3tZVDmHiT8hC-IpfB6v0McxsX7J-fXSBokA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Index all users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDI2NzE1fQ.yfxCQKdr3tZVDmHiT8hC-IpfB6v0McxsX7J-fXSBokA",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "353"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"161-m1gXaMBnjJHaStoLNcIayNVdtUw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 12:52:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 5,\n        \"first_name\": \"chaklader\",\n        \"last_name\": \"arefe\",\n        \"password\": \"$2b$10$sq5mf9ATdrDQXSvjcbUF5.tE/fFjxN603TPrZG3ixabw.LQd9Wb96\",\n        \"role\": \"ADMIN\",\n        \"email\": \"omi.chaklader@gmail.com\"\n    },\n    {\n        \"id\": 6,\n        \"first_name\": \"merlion\",\n        \"last_name\": \"monroe\",\n        \"password\": \"$2b$10$LXbtU90IadB1YOWB8zY3.OU7CUu4M1cloD2muuqBzuI/4THwSBcZa\",\n        \"role\": \"COMMUNITY\",\n        \"email\": \"m.monroe@gmail.com\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Show an user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDI2NzE1fQ.yfxCQKdr3tZVDmHiT8hC-IpfB6v0McxsX7J-fXSBokA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"6"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Show an user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDI2NzE1fQ.yfxCQKdr3tZVDmHiT8hC-IpfB6v0McxsX7J-fXSBokA",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b0-oIJ6oVOz6NQ0flaHnHJByMqQgOs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 12:53:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 5,\n    \"first_name\": \"chaklader\",\n    \"last_name\": \"arefe\",\n    \"password\": \"$2b$10$sq5mf9ATdrDQXSvjcbUF5.tE/fFjxN603TPrZG3ixabw.LQd9Wb96\",\n    \"role\": \"ADMIN\",\n    \"email\": \"omi.chaklader@gmail.com\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update an user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoiJDJiJDEwJExYYnRVOTBJYWRCMVlPV0I4elkzLk9VN0NVdTRNMWNsb0QybXV1cUJ6dUkvNFRId1NCY1phIiwicm9sZSI6IkNPTU1VTklUWSIsImVtYWlsIjoibS5tb25yb2VAZ21haWwuY29tIn0sImlhdCI6MTYyODQyNjcyOH0.SzNRfAdRD2y477bBL8OQx4AmpOAaDomDSSTSlPt_y-Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"natalie\",\n    \"lastName\": \"portman\",\n    \"password\": \"password_renewed\",\n    \"role\": \"COMMUNITY\",\n    \"email\": \"natalie.portman@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"6"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update an user",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoiJDJiJDEwJExYYnRVOTBJYWRCMVlPV0I4elkzLk9VN0NVdTRNMWNsb0QybXV1cUJ6dUkvNFRId1NCY1phIiwicm9sZSI6IkNPTU1VTklUWSIsImVtYWlsIjoibS5tb25yb2VAZ21haWwuY29tIn0sImlhdCI6MTYyODQyNjcyOH0.SzNRfAdRD2y477bBL8OQx4AmpOAaDomDSSTSlPt_y-Q",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"natalie\",\n    \"lastName\": \"portman\",\n    \"password\": \"password_renewed\",\n    \"role\": \"COMMUNITY\",\n    \"email\": \"natalie.portman@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"6"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 13:07:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete an user",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJmaXJzdF9uYW1lIjoibWVybGlvbiIsImxhc3RfbmFtZSI6Im1vbnJvZSIsInBhc3N3b3JkIjoiJDJiJDEwJHdQL1BqTzZVTE4zMmZpY0o4dDV1QU85Q1lrMEJ6RTcybHpmRTZITVFRS0IvVzRYZzdlSTl5Iiwicm9sZSI6IkNPTU1VTklUWSIsImVtYWlsIjoibS5tb25yb2VAZ21haWwuY29tIn0sImlhdCI6MTYyODQzMzI3NH0.l5cLx1ejK1qtsqqOWfPIMdycvcX7y_C-9Dw8Flj4TzM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete an user",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJmaXJzdF9uYW1lIjoiY2hha2xhZGVyIiwibGFzdF9uYW1lIjoiYXJlZmUiLCJwYXNzd29yZCI6IiQyYiQxMCRzcTVtZjlBVGRyRFFYU3ZqY2JVRjUudEUvZkZqeE42MDNUUHJaRzNpeGFidy5MUWQ5V2I5NiIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoib21pLmNoYWtsYWRlckBnbWFpbC5jb20ifSwiaWF0IjoxNjI4NDMzNDI0fQ.Y_LBZBe0mSODtJXKtLRFIBPfMtOfK-FCsy9FuqJKSUI",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"7"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Aug 2021 14:39:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	]
+}
