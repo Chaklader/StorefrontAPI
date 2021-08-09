@@ -8,6 +8,7 @@
 */
 import client from '../database';
 import { Order } from '../models/orders';
+import { Product } from '../models/products';
 
 export class DashboardQueries {
     /* 
@@ -81,6 +82,25 @@ export class DashboardQueries {
             return result.rows;
         } catch (err) {
             throw new Error(`unable get products by price: ${err}`);
+        }
+    }
+
+    /* 
+       [OPTIONAL] Get 5 most popular products 
+    */
+    async fiveMostPopularProducts(): Promise<Product[]> {
+        try {
+            //@ts-ignore
+            const conn = await client.connect();
+            const sql =
+                'SELECT * FROM products p INNER JOIN order_products op ON p.id=op.product_id ORDER BY op.quantity DESC LIMIT 5';
+
+            const result = await conn.query(sql);
+            conn.release();
+
+            return result.rows;
+        } catch (err) {
+            throw new Error(`unable get top 5 most sold products: ${err}`);
         }
     }
 
