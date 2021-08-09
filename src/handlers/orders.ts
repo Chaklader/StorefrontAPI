@@ -13,7 +13,6 @@ const store = new OrderStore();
 - Current Order by user (args: user id)[token required]
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 */
-
 /* 
     an order can only be created by the respective user after the token validation
 */

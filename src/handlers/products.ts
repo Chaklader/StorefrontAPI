@@ -54,13 +54,13 @@ const show = async (_req: Request, res: Response) => {
     }
 };
 
-//TODO: retrieve by category is not working
+/* 
+    this will find the products based on category provided in the URL parameter
+*/
 const productsByCategory = async (_req: Request, res: Response) => {
     try {
-        const cgry = _req.params.category;
-        console.log('Category is =' + cgry);
-
-        const products = await store.productsByCategory(cgry);
+        const category = _req.params.category;
+        const products = await store.productsByCategory(category);
 
         res.json(products);
     } catch (err) {
@@ -127,7 +127,7 @@ const productRoutes = (app: express.Application) => {
     app.post('/products', verifyAuthToken, create);
     app.get('/products', index);
     app.get('/products/:id', show);
-    app.get('/products/:category', productsByCategory);
+    app.get('/products/category/:category', productsByCategory);
     app.delete('/products/:id', destroy);
 };
 
