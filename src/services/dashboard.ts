@@ -7,6 +7,7 @@
     directory. 
 */
 import client from '../database';
+import { Order } from '../models/orders';
 
 export class DashboardQueries {
     /* 
@@ -62,7 +63,7 @@ export class DashboardQueries {
     /* 
        Get 5 most expensive products 
     */
-    async fiveMostExpensive(): Promise<
+    async fiveMostExpensiveProducts(): Promise<
         {
             name: string;
             price: number;
@@ -80,6 +81,46 @@ export class DashboardQueries {
             return result.rows;
         } catch (err) {
             throw new Error(`unable get products by price: ${err}`);
+        }
+    }
+
+    /* 
+        find all the current (open) orders for a certain user
+    */
+    async showCurrentOrders(userId: number): Promise<Order[]> {
+        {
+            try {
+                //@ts-ignore
+                const conn = await client.connect();
+                const SQL =
+                    "SELECT * FROM orders o INNER JOIN order_products op ON o.id = op.order_id WHERE o.user_id=($1) AND o.status='open'";
+
+                const result = await conn.query(SQL, [userId]);
+                conn.release();
+
+                return result.rows;
+            } catch (err) {
+                throw new Error(`unable get current orders: ${err}`);
+            }
+        }
+    }
+
+    /* 
+        find all the completed orders for a certain user
+    */
+    async showCompletedOrders(userId: number): Promise<Order[]> {
+        try {
+            //@ts-ignore
+            const conn = await client.connect();
+            const SQL =
+                "SELECT * FROM orders o INNER JOIN order_products op ON o.id = op.order_id WHERE o.user_id=($1) AND o.status='close'";
+
+            const result = await conn.query(SQL, [userId]);
+            conn.release();
+
+            return result.rows;
+        } catch (err) {
+            throw new Error(`unable get current orders: ${err}`);
         }
     }
 }
