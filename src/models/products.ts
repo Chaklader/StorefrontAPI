@@ -18,6 +18,7 @@ export class ProductStore {
             const result = await conn.query(sql, [p.name, p.price, p.category]);
 
             const newProduct = result.rows[0];
+            let parsedNewProduct: any = JSON.parse(JSON.stringify(newProduct));
 
             conn.release();
 

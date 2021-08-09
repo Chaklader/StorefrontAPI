@@ -2,7 +2,6 @@ import { ProductStore, Product } from '../products';
 
 const store = new ProductStore();
 
-
 /* 
 ## Product data scheme
 
@@ -38,13 +37,14 @@ describe('Product Model', () => {
         const result = await store.create({
             id: 1,
             name: 'War and Peace',
-            price: 250.25,
+            price: 250,
             category: 'Literature',
         });
+
         expect(result).toEqual({
             id: 1,
             name: 'War and Peace',
-            price: 250.25,
+            price: 250,
             category: 'Literature',
         });
     });
