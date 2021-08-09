@@ -1,5 +1,9 @@
 import express, { Request, Response } from 'express';
 import { DashboardQueries } from '../services/dashboard';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+
+dotenv.config();
 
 const dashboard = new DashboardQueries();
 
@@ -44,11 +48,34 @@ const fiveMostPopular = async (_req: Request, res: Response) => {
 };
 
 /* 
-    Show currently open orders by user 
+    Show currently open orders by user after token validation
 */
 const showCurrentOrders = async (_req: Request, res: Response) => {
     try {
-        const userId = parseInt(_req.params.id);
+        const userId = parseInt(_req.params.userId);
+
+        try {
+            const authorizationHeader = _req.headers.authorization + '';
+            const token = authorizationHeader.split(' ')[1];
+
+            const decoded: any = jwt.verify(
+                token,
+                process.env.TOKEN_SECRET + ''
+            );
+
+            if (decoded.user.id != userId) {
+                throw new Error(
+                    'only the respective user can see their current orders ..'
+                );
+            }
+        } catch (err) {
+            res.status(401);
+            res.send(
+                `Unable to show current orders for user ${userId} due to invalid token with Error: ${err}`
+            );
+
+            return;
+        }
 
         const orders = await dashboard.showCurrentOrders(userId);
         res.json(orders);
@@ -63,7 +90,30 @@ const showCurrentOrders = async (_req: Request, res: Response) => {
 */
 const showCompletedOrders = async (_req: Request, res: Response) => {
     try {
-        const userId = parseInt(_req.params.id);
+        const userId = parseInt(_req.params.userId);
+
+        try {
+            const authorizationHeader = _req.headers.authorization + '';
+            const token = authorizationHeader.split(' ')[1];
+
+            const decoded: any = jwt.verify(
+                token,
+                process.env.TOKEN_SECRET + ''
+            );
+
+            if (decoded.user.id != userId) {
+                throw new Error(
+                    'only the respective user can see their completed orders ..'
+                );
+            }
+        } catch (err) {
+            res.status(401);
+            res.send(
+                `Unable to show completed orders for user ${userId} due to invalid token with Error: ${err}`
+            );
+
+            return;
+        }
 
         const orders = await dashboard.showCompletedOrders(userId);
         res.json(orders);
@@ -78,8 +128,8 @@ const dashboardRoutes = (app: express.Application) => {
     app.get('/users-with-orders', usersWithOrders);
     app.get('/five-most-expensive', fiveMostExpensive);
     app.get('/five-most-popular', fiveMostPopular);
-    app.get('/show-current-orders', showCurrentOrders);
-    app.get('/show-completed-orders', showCompletedOrders);
+    app.get('/show-current-orders/:userId', showCurrentOrders);
+    app.get('/show-completed-orders/:userId', showCompletedOrders);
 };
 
 export default dashboardRoutes;
