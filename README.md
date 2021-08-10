@@ -59,6 +59,13 @@ Before submitting, make sure that your project is complete with a `README.md`. Y
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
 
 
+## SETUP THE BEARER TOKEN 
+
+![alt text](images/autheticated_product_creation.png)
+
+![alt text](images/authentication_setup.png)
+
+
 ### TODO
 
     - Provide more tests
@@ -96,4 +103,4 @@ Before submitting your project, spin it up and test each endpoint. If each one r
 
 
 
-![alt text](images/authentication_setup.png)
+
