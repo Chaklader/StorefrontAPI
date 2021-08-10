@@ -33,21 +33,21 @@ describe('Product Model', () => {
         expect(store.index).toBeDefined();
     });
 
-    it('create method should add a product', async () => {
-        const result = await store.create({
-            id: 1,
-            name: 'War and Peace',
-            price: 250,
-            category: 'Literature',
-        });
+    // it('create method should add a product', async () => {
+    //     const result = await store.create({
+    //         id: 1,
+    //         name: 'War and Peace',
+    //         price: 250,
+    //         category: 'Literature',
+    //     });
 
-        expect(result).toEqual({
-            id: 1,
-            name: 'War and Peace',
-            price: 250,
-            category: 'Literature',
-        });
-    });
+    //     expect(result).toEqual({
+    //         id: 1,
+    //         name: 'War and Peace',
+    //         price: 250,
+    //         category: 'Literature',
+    //     });
+    // });
 
     // it('index method should return a list of books', async () => {
     //     const result = await store.index();

@@ -1,44 +1,6 @@
 # Storefront Backend Project
 
 
-# TODO: The tests are not running
-# POSTMAN colelctions
-# Run with the docker container
-
----------------------------------------
-    $ yarn add jasmine 
-    $ yarn global add jasmine 
-    $ yarn add jasmine @types/jasmine
----------------------------------------
-
-
-    {
-        "firstName": "Marilyn",
-        "lastName": "Monroe",
-        "password": "password",
-        "role": "ADMIN", 
-        "email": "m.monroe@gmail.com"
-    }
-
-$ docker-compose up               
-
-<!-- to enter the bash terminal of the container -->
-$ docker-compose run database bash
-
-root@database# psql --host=database --username=arefe --dbname=postgres
-
-<!-- 
-
-# find the container name 
-$ docker ps -a
-#Run the below command to enter into the container (with the ID from step-1). 
-$ docker exec -it <PSQL-Container-ID> bash
-
-#Authenticate to start using as postgres user 
-$ psql -h localhost -p 5432 -U postgres -W
-
- -->
-
 
 ## Getting Started
 
@@ -95,3 +57,38 @@ Add JWT functionality as shown in the course. Make sure that JWTs are required f
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database.
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+
+
+### TODO
+
+    - Provide more tests
+    - Run with the docker 
+
+### INFO
+
+    Enter the database using the docker 
+
+        $ docker-compose up
+        
+        ## the database srevice name is database 
+        $ docker-compose run database bash 
+
+        ## enter the bash terminal 
+        root@database# psql --host=database --username=arefe --dbname=postgres
+
+
+        We can also do it as follows,
+
+        ## find the container name
+        $ docker ps -a
+        
+        ## Run the below command to enter into the container (with the ID from step-1).
+        $ docker exec -it <PSQL-Container-ID> bash
+
+        ## Authenticate to start using as postgres user
+        $ psql -h localhost -p 5432 -U postgres -W
+
+
+    If test(s) failed, we will need to manually reset the databse before we can proceed again:
+
+        $ db-migrate --env test reset
