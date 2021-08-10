@@ -92,3 +92,8 @@ Before submitting your project, spin it up and test each endpoint. If each one r
     If test(s) failed, we will need to manually reset the databse before we can proceed again:
 
         $ db-migrate --env test reset
+
+
+
+
+![alt text](images/authentication_setup.png)
