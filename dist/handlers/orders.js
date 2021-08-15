@@ -191,7 +191,7 @@ var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, funct
     only the respective user can delete their own order
 */
 var destroy = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orderId, order, authorizationHeader, token, decoded, uId, deleted, err_5;
+    var orderId, order, authorizationHeader, token, decoded, jsonStr, uId, deleted, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -207,7 +207,8 @@ var destroy = function (_req, res) { return __awaiter(void 0, void 0, void 0, fu
                     authorizationHeader = _req.headers.authorization + '';
                     token = authorizationHeader.split(' ')[1];
                     decoded = jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET + '');
-                    uId = JSON.parse(JSON.stringify(order)).user_id;
+                    jsonStr = JSON.stringify(order);
+                    uId = JSON.parse(jsonStr).user_id;
                     if (decoded.user.id != uId) {
                         throw new Error('only the respective user can delete their own order ..');
                     }

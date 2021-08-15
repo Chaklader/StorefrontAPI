@@ -1,70 +1,12 @@
 # Storefront Backend Project
 
 
-## SETUP
 
-Firstly, we will need to install all the node packages that are required for the project using the comamnd:
+## Getting Started
 
-    $ npm install
+This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
 
-
-Now, we are ready to setup the databases required for the project. For the purpose, we will need to run and later, connect with the PostgreSQL daatbase running the command from terminal:
-
-    $ psql postgres
-
-Then, we will need to create a database for the application namly `storefront` and another for testing
-namely `storefront_test` for the user `arefe` with the command provided:
-
-    <!-- create the dataabses -->
-    postgres=# CREATE DATABASE storefront;
-    postgres=# CREATE DATABASE storefront_test;
-
-    <!-- create an user -->
-    postgres=# CREATE USER arefe WITH ENCRYPTED PASSWORD 'udacity';
-
-    <!-- provide the user access for the databases -->
-    postgres=# GRANT ALL PRIVILEGES ON DATABASE storefront TO arefe;
-    postgres=# GRANT ALL PRIVILEGES ON DATABASE storefront_test TO arefe;
-
-## DB MIGRATION
-
-At the moment, we are ready for the databse migration and creating the tables. WE can do that using the
-command provided:
-
-    <!-- this command will create the tables in the develpment database -->
-    $ yarn dev_up
-
-In case, if we would like to drop these tables and start over, we can run the command:
-
-    <!-- this will drop the tables in the primary database -->
-    $ yarn dev_down
-
-## TESTING
-
-We can run the tests using the comamnd:
-
-    $ yarn test
-
-## START APPS
-
-We can start the app using any of the command provided:
-
-    $ yarn start 
-    $ yarn watch
-
-The above command will start the app at the port of 3000. A postman collection is provided named
-StorefrontAPI.postman_collection.json that can be user for inspection of the app. The setup for the
-authetication need to be accordingly.
-
-
-## SETUP THE BEARER TOKEN 
-
-![alt text](images/autheticated_product_creation.png)
-
-![alt text](images/authentication_setup.png)
-
-
-## TECHNOLOGIES
+## Required Technologies
 
 Your application must make use of the following libraries:
 
@@ -75,9 +17,7 @@ Your application must make use of the following libraries:
 -   jsonwebtoken from npm for working with JWTs
 -   jasmine from npm for testing
 
-
-
-## STEPS FOR COMPLETION
+## Steps to Completion
 
 ### 1. Plan to Meet Requirements
 
@@ -117,6 +57,54 @@ Add JWT functionality as shown in the course. Make sure that JWTs are required f
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database.
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+
+
+## SETUP THE BEARER TOKEN 
+
+![alt text](images/autheticated_product_creation.png)
+
+![alt text](images/authentication_setup.png)
+
+
+### TODO
+
+    - Provide more tests
+    - Run with the docker 
+
+### INFO
+
+    Enter the database using the docker 
+
+        $ docker-compose up
+        
+        ## the database srevice name is database 
+        $ docker-compose run database bash 
+
+        ## enter the bash terminal 
+        root@database# psql --host=database --username=arefe --dbname=postgres
+
+
+        We can also do it as follows,
+
+        ## find the container name
+        $ docker ps -a
+        
+        ## Run the below command to enter into the container (with the ID from step-1).
+        $ docker exec -it <PSQL-Container-ID> bash
+
+        ## Authenticate to start using as postgres user
+        $ psql -h localhost -p 5432 -U postgres -W
+
+
+    If test(s) failed, we will need to manually reset the databse before we can proceed again:
+
+        $ db-migrate --env test reset
+
+
+    To run the tests:
+
+        "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test"    
+
 
 
 

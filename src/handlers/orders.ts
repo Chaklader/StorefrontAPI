@@ -155,7 +155,8 @@ const destroy = async (_req: Request, res: Response) => {
                 process.env.TOKEN_SECRET + ''
             );
 
-            const uId = JSON.parse(JSON.stringify(order)).user_id;
+            const jsonStr = JSON.stringify(order);
+            const uId = JSON.parse(jsonStr).user_id;
 
             if (decoded.user.id != uId) {
                 throw new Error(

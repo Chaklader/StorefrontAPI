@@ -4,13 +4,13 @@
         "host": "127.0.0.1",
         "database": "storefront",
         "user": "arefe",
-        "password": "arefe"
+        "password": "udacity"
     },
     "test": {
         "driver": "pg",
         "host": "127.0.0.1",
         "database": "storefront_test",
         "user": "arefe",
-        "password": "arefe"
+        "password": "udacity"
     }
 }
