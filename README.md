@@ -63,6 +63,24 @@ authetication need to be accordingly.
 
 ![alt text](images/authentication_setup.png)
 
+text
+![alt text](P_3/StorefrontAPI/images/products/1.png)
+
+text
+![alt text](P_3/StorefrontAPI/images/products/2.png)
+
+text
+![alt text](P_3/StorefrontAPI/images/products/3.png)
+
+text
+![alt text](P_3/StorefrontAPI/images/products/4.png)
+
+text
+![alt text](P_3/StorefrontAPI/images/products/5.png)
+
+text
+![alt text](P_3/StorefrontAPI/images/products/6.png)
+
 
 ## TECHNOLOGIES
 
@@ -75,9 +93,8 @@ Your application must make use of the following libraries:
 -   jsonwebtoken from npm for working with JWTs
 -   jasmine from npm for testing
 
-
-
 ## STEPS FOR COMPLETION
+
 
 ### 1. Plan to Meet Requirements
 
