@@ -63,24 +63,35 @@ authetication need to be accordingly.
 
 ![alt text](images/authentication_setup.png)
 
-text
+## POSTMAN API CALLS
+
+## PRODUCTS
+
+Create a product
+
 ![alt text](images/products/1.png)
 
-text
+Index all products
+
 ![alt text](images/products/2.png)
 
-text
+Show a product by ID
+
 ![alt text](images/products/3.png)
 
-text
-![alt text](images/products/4.png)
+Delete a product
 
-text
 ![alt text](images/products/5.png)
 
-text
+Show products by category
+
 ![alt text](images/products/6.png)
 
+
+## ORDERS
+
+
+## USERS
 
 ## TECHNOLOGIES
 
