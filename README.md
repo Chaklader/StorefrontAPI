@@ -69,7 +69,7 @@ authetication need to be accordingly.
 
 Create a product
 
-![alt text](images/products/1.png)
+![Create a product](images/products/1.png)
 
 Index all products
 
@@ -90,8 +90,61 @@ Show products by category
 
 ## ORDERS
 
+Create an order
+
+![alt text](images/orders/1.png)
+
+Index all orders
+
+![alt text](images/orders/2.png)
+
+Show an order
+
+![alt text](images/orders/3.png)
+
+Delete an order
+
+![alt text](images/orders/4.png)
+
+Add products to an order
+
+![alt text](images/orders/5.png)
 
 ## USERS
+
+Create an user (ADMIN)
+
+![alt text](images/users/1.png)
+
+Login an user (ADMIN)
+
+![alt text](images/users/2.png)
+
+Create an user (COMMUNITY)
+
+![alt text](images/users/3.png)
+
+Login an user (COMMUNITY)
+
+![alt text](images/users/4.png)
+
+Index all users
+
+![alt text](images/users/5.png)
+
+Show an user
+
+![alt text](images/users/6.png)
+
+Update an user
+
+![alt text](images/users/7.png)
+
+Delete an user
+
+![alt text](images/users/8.png)
+
+
 
 ## TECHNOLOGIES
 
