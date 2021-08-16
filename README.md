@@ -1,11 +1,11 @@
 ## STOREFRONT BACKEND PROJECT
 
+### SETUP
 
-## SETUP
+## ENVIRONMENT VARIABLES AND APP SETUP
 
 Please, create an environemnt file namely `.env` at the root of the project and provide the following info:
 
-    
         POSTGRES_HOST=127.0.0.1
 
         POSTGRES_DB=storefront
@@ -14,18 +14,15 @@ Please, create an environemnt file namely `.env` at the root of the project and 
         POSTGRES_USER=*****
         POSTGRES_PASSWORD=*****
 
-        ENV=dev 
+        ENV=dev
 
         BYCRYPT_PASSWORD=*****
         SALT_ROUNDS=*****
         TOKEN_SECRET=*****
-    
 
-Information about the  PostgreSQL user and password is provided below. The BYCRYPT_PASSWORD is used as pepper with the user generated password for hashing and SALT_ROUNDS is for rounding the hashed password. 
+Information about the PostgreSQL user and password is provided below. The BYCRYPT_PASSWORD is used as pepper with the user generated password for hashing and SALT_ROUNDS is for rounding the hashed password.
 I provided sample code below as an example:
 
-
-    
         const pepper = process.env.BYCRYPT_PASSWORD;
         const saltRounds = '' + process.env.SALT_ROUNDS;
 
@@ -33,22 +30,27 @@ I provided sample code below as an example:
             u.password + pepper,
             parseInt(saltRounds)
         );
-    
 
 We use `TOKEN_SECRET` for the JWT signin and verification. This can be any random string and provided by
 the programmer. The `POSTGRES_HOST` is the host information where we would like to run the app; if we
 desired to run the app in the location host we can provide `127.0.0.1` as input. The `POSTGRES_DB` and
-`POSTGRES_DB_TEST` are respectively the development and test database. The `ENV` variable is for which mode we would like to run the application. 
-
-
-
+`POSTGRES_DB_TEST` are respectively the development and test database. The `ENV` variable is for which mode we would like to run the application.
 
 We will need to install all the node packages that are required for the project using the comamnd:
 
         $ npm install
 
+## DATABASE SETUP AND MIGRATION
 
-Now, we are ready to setup the databases required for the project. For the purpose, we will need to run and later, connect with the PostgreSQL daatbase running the command from terminal:
+Now, we are ready to setup the databases required for the project. In OS X, run the PostgreSQL database in as background service with the command that will run in the DB in the port 5432:
+
+        $ pg_ctl -D /usr/local/var/postgres start
+
+We can also run the database in the same port using brew:
+
+        $ brew services start postgresql
+
+For the purpose, we will need to run and later, connect with the PostgreSQL daatbase running the command from terminal:
 
         $ psql postgres
 
@@ -65,10 +67,6 @@ namely `storefront_test` for the user `arefe` with the command provided:
         <!-- provide the user access for the databases -->
         postgres=# GRANT ALL PRIVILEGES ON DATABASE storefront TO arefe;
         postgres=# GRANT ALL PRIVILEGES ON DATABASE storefront_test TO arefe;
-
-
-
-## DB MIGRATION
 
 At the moment, we are ready for the databse migration and creating the tables. WE can do that using the
 command provided:
@@ -91,29 +89,24 @@ We can run the tests using the comamnd:
 
 We can start the app using any of the command provided:
 
-        $ yarn start 
+        $ yarn start
         $ yarn watch
 
 The above command will start the app at the port of 3000. A postman collection is provided named
 StorefrontAPI.postman_collection.json that can be user for inspection of the app. The setup for the
 authetication need to be accordingly.
 
-
-## SETUP THE BEARER TOKEN 
+## SETUP THE BEARER TOKEN
 
 Setup Bearer token in the headers
 
 ![alt text](images/autheticated_product_creation.png)
 
-Set Authetication Type: No Auth in the Postman 
+Set Authetication Type: No Auth in the Postman
 
 ![alt text](images/authentication_setup.png)
 
-
-
-
 ## POSTMAN API CALLS
-
 
 ## USERS
 
@@ -149,9 +142,6 @@ Delete an user (token required - only ADMIN have access)
 
 ![alt text](images/users/8.png)
 
-
-
-
 ## PRODUCTS
 
 Create a product (toekn required)
@@ -173,7 +163,6 @@ Delete a product
 Show products by category
 
 ![alt text](images/products/6.png)
-
 
 ## ORDERS
 
@@ -197,10 +186,6 @@ Add products to an order
 
 ![alt text](images/orders/5.png)
 
-
-
-
-
 ## TECHNOLOGIES
 
 Your application must make use of the following libraries:
@@ -213,7 +198,6 @@ Your application must make use of the following libraries:
 -   jasmine from npm for testing
 
 ## STEPS FOR COMPLETION
-
 
 ### 1. Plan to Meet Requirements
 
@@ -253,7 +237,3 @@ Add JWT functionality as shown in the course. Make sure that JWTs are required f
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database.
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
-
-
-
-
