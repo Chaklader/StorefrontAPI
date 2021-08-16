@@ -1,9 +1,49 @@
-# Storefront Backend Project
+## STOREFRONT BACKEND PROJECT
 
 
 ## SETUP
 
-Firstly, we will need to install all the node packages that are required for the project using the comamnd:
+Please, create an environemnt file namely `.env` at the root of the project and provide the following info:
+
+    ```
+        POSTGRES_HOST=127.0.0.1
+
+        POSTGRES_DB=storefront
+        POSTGRES_TEST_DB=storefront_test
+
+        POSTGRES_USER=*****
+        POSTGRES_PASSWORD=*****
+
+        ENV=dev 
+
+        BYCRYPT_PASSWORD=*****
+        SALT_ROUNDS=*****
+        TOKEN_SECRET=*****
+    ```
+
+Information about the  PostgreSQL user and password is provided below. The BYCRYPT_PASSWORD is used as pepper with the user generated password for hashing and SALT_ROUNDS is for rounding the hashed password. 
+I provided sample code below as an example:
+
+
+    ```
+        const pepper = process.env.BYCRYPT_PASSWORD;
+        const saltRounds = '' + process.env.SALT_ROUNDS;
+
+        const hashedPassword = bcrypt.hashSync(
+            u.password + pepper,
+            parseInt(saltRounds)
+        );
+    ```
+
+We use `TOKEN_SECRET` for the JWT signin and verification. This can be any random string and provided by
+the programmer. The `POSTGRES_HOST` is the host information where we would like to run the app; if we
+desired to run the app in the location host we can provide `127.0.0.1` as input. The `POSTGRES_DB` and
+`POSTGRES_DB_TEST` are respectively the development and test database. The `ENV` variable is for which mode we would like to run the application. 
+
+
+
+
+We will need to install all the node packages that are required for the project using the comamnd:
 
     $ npm install
 
@@ -25,6 +65,8 @@ namely `storefront_test` for the user `arefe` with the command provided:
     <!-- provide the user access for the databases -->
     postgres=# GRANT ALL PRIVILEGES ON DATABASE storefront TO arefe;
     postgres=# GRANT ALL PRIVILEGES ON DATABASE storefront_test TO arefe;
+
+
 
 ## DB MIGRATION
 
@@ -63,11 +105,52 @@ authetication need to be accordingly.
 
 ![alt text](images/authentication_setup.png)
 
+
+
+
 ## POSTMAN API CALLS
+
+
+## USERS
+
+Create an user: ADMIN (token is generated)
+
+![alt text](images/users/1.png)
+
+Login an user: ADMIN (username and password required and token generated)
+
+![alt text](images/users/2.png)
+
+Create an user :COMMUNITY (token is generated)
+
+![alt text](images/users/3.png)
+
+Login an user: COMMUNITY (username and password required and token generated)
+
+![alt text](images/users/4.png)
+
+Index all users (token required - both ADMIN and COMMUNITY have access)
+
+![alt text](images/users/5.png)
+
+Show an user (token required - both ADMIN and COMMUNITY have access)
+
+![alt text](images/users/6.png)
+
+Update an user (token required - only the respective user can do it)
+
+![alt text](images/users/7.png)
+
+Delete an user (token required - only ADMIN have access)
+
+![alt text](images/users/8.png)
+
+
+
 
 ## PRODUCTS
 
-Create a product
+Create a product (toekn required)
 
 ![Create a product](images/products/1.png)
 
@@ -90,7 +173,7 @@ Show products by category
 
 ## ORDERS
 
-Create an order
+Create an order (token required)
 
 ![alt text](images/orders/1.png)
 
@@ -110,39 +193,7 @@ Add products to an order
 
 ![alt text](images/orders/5.png)
 
-## USERS
 
-Create an user (ADMIN)
-
-![alt text](images/users/1.png)
-
-Login an user (ADMIN)
-
-![alt text](images/users/2.png)
-
-Create an user (COMMUNITY)
-
-![alt text](images/users/3.png)
-
-Login an user (COMMUNITY)
-
-![alt text](images/users/4.png)
-
-Index all users
-
-![alt text](images/users/5.png)
-
-Show an user
-
-![alt text](images/users/6.png)
-
-Update an user
-
-![alt text](images/users/7.png)
-
-Delete an user
-
-![alt text](images/users/8.png)
 
 
 

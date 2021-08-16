@@ -49,33 +49,32 @@ describe('Product Model', () => {
         });
     });
 
-    it('index method should return a list of products', async () => {
-        const result = await store.index();
-        expect(result).toEqual([
-            {
-                id: 1,
-                name: 'War and Peace',
-                price: 250,
-                category: 'Literature',
-            },
-        ]);
-    });
+    // it('index method should return a list of products', async () => {
+    //     const result = await store.index();
+    //     expect(result).toEqual([
+    //         {
+    //             id: 1,
+    //             name: 'War and Peace',
+    //             price: 250,
+    //             category: 'Literature',
+    //         },
+    //     ]);
+    // });
 
-    // it('show method should return the correct book', async () => {
-    //     const result = await store.show('1');
+    // it('show method should return the correct product', async () => {
+    //     const result = await store.show(1);
     //     expect(result).toEqual({
-    //         id: '1',
-    //         title: 'Bridge to Terabithia',
-    //         total_pages: 250,
-    //         author: 'Katherine Paterson',
-    //         type: 'Childrens',
+    //         id: 1,
+    //         name: 'War and Peace',
+    //         price: 250,
+    //         category: 'Literature',
     //     });
     // });
 
-    // it('delete method should remove the book', async () => {
-    //     store.delete('1');
-    //     const result = await store.index();
+    it('delete method should remove the product', async () => {
+        store.delete(1);
+        const result = await store.index();
 
-    //     expect(result).toEqual([]);
-    // });
+        expect(result).toEqual([]);
+    });
 });
