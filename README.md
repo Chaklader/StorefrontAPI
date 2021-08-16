@@ -103,11 +103,11 @@ authetication need to be accordingly.
 
 Setup Bearer token in the headers
 
-    ![alt text](images/autheticated_product_creation.png)
+![alt text](images/autheticated_product_creation.png)
 
 Set Authetication Type: No Auth in the Postman 
 
-    ![alt text](images/authentication_setup.png)
+![alt text](images/authentication_setup.png)
 
 
 
