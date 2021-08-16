@@ -85,6 +85,10 @@ We can run the tests using the comamnd:
 
         $ yarn test
 
+If test(s) failed, the test database will not be dropped and we will need to manually reset before we can proceed again:
+
+        $ db-migrate --env test reset
+
 ## START APPS
 
 We can start the app using any of the command provided:
@@ -185,6 +189,10 @@ Delete an order
 Add products to an order
 
 ![alt text](images/orders/5.png)
+
+## REST END POINTS AND DB SHAPES
+
+The documentation can be found in the in the REQUIREMENTS.md file.
 
 ## TECHNOLOGIES
 
