@@ -194,6 +194,11 @@ Add products to an order
 
 The documentation can be found in the in the REQUIREMENTS.md file.
 
+### TODO
+
+    - Provide the Swagger REST API documentation
+    - Run with the docker
+
 ## TECHNOLOGIES
 
 Your application must make use of the following libraries:
