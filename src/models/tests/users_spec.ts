@@ -40,35 +40,22 @@ describe('User Model', () => {
     /* 
         check if the methods are functioning well
     */
-
-    // Error
-    /* 
-        Stack:
-        Error: Expected object to have properties
-            firstName: 'Chaklader'
-            lastName: 'Arefe'
-        Expected object not to have properties
-            first_name: 'Chaklader'
-            last_name: 'Arefe'
-            at <Jasmine>
-            at UserContext.<anonymous> (/Users/chaklader/Documents/Education/Udacity/Udacity_Nano_Degree/Full_Stack_JavaScript_Developer/C_3/P_3/StorefrontAPI/src/models/tests/users_spec.ts:66:24)
-            at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    */
     it('create method should add an user', async () => {
-        const result = await store.create({
-            id: 1,
-            firstName: 'Chaklader',
-            lastName: 'Arefe',
+        const result: User = await store.create({
+            firstname: 'Chaklader',
+            lastname: 'Arefe',
             password: 'password',
             role: 'ADMIN',
             email: 'omi.chaklader@gmail.com',
         });
 
+        const hashedPassword = result.password;
+
         const createdUser: User = {
             id: 1,
-            firstName: 'Chaklader',
-            lastName: 'Arefe',
-            password: result.password,
+            firstname: 'Chaklader',
+            lastname: 'Arefe',
+            password: hashedPassword,
             role: 'ADMIN',
             email: 'omi.chaklader@gmail.com',
         };
@@ -76,72 +63,86 @@ describe('User Model', () => {
         expect(result).toEqual(createdUser);
     });
 
+    it('login method should return the user', async () => {
+        const result = await store.login('omi.chaklader@gmail.com', 'password');
+
+        if (result === null) {
+            throw new Error('No user found for the email and password.');
+        }
+
+        const hashedPassword = result.password;
+
+        expect(result).toEqual({
+            id: 1,
+            firstname: 'Chaklader',
+            lastname: 'Arefe',
+            password: hashedPassword,
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
+        });
+    });
+
+    it('index method should return a list of users', async () => {
+        const result = await store.index();
+
+        const hashedPassword = result[0].password;
+
+        expect(result).toEqual([
+            {
+                id: 1,
+                firstname: 'Chaklader',
+                lastname: 'Arefe',
+                password: hashedPassword,
+                role: 'ADMIN',
+                email: 'omi.chaklader@gmail.com',
+            },
+        ]);
+    });
+
+    it('show method should return the correct user', async () => {
+        const result = await store.show(1);
+
+        const hashedPassword = result.password;
+
+        expect(result).toEqual({
+            id: 1,
+            firstname: 'Chaklader',
+            lastname: 'Arefe',
+            password: hashedPassword,
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
+        });
+    });
+
     // it('update method should update the respective user data', async () => {
-    //     const result = await store.update(
+    //     store.update(
     //         {
-    //             id: 1,
-    //             firstName: 'Chaklader',
-    //             lastName: 'Arefe',
-    //             password: 'password',
+    //             firstname: 'natalie',
+    //             lastname: 'portman',
+    //             password: 'password_renewed',
     //             role: 'ADMIN',
-    //             email: 'omi.chaklader@gmail.com',
+    //             email: 'natalie.portman@gmail.com',
     //         },
     //         1
     //     );
 
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         firstName: 'Chaklader',
-    //         lastName: 'Arefe',
-    //         password: 'password',
-    //         role: 'ADMIN',
-    //         email: 'omi.chaklader@gmail.com',
-    //     });
-    // });
-
-    // it('login method should return the user', async () => {
-    //     const result = await store.login('omi.chaklader@gmail.com', 'password');
-
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         firstName: 'Chaklader',
-    //         lastName: 'Arefe',
-    //         password: 'password',
-    //         role: 'ADMIN',
-    //         email: 'omi.chaklader@gmail.com',
-    //     });
-    // });
-
-    // it('index method should return a list of users', async () => {
-    //     const result = await store.index();
-    //     expect(result).toEqual([
-    //         {
-    //             id: 1,
-    //             firstName: 'Chaklader',
-    //             lastName: 'Arefe',
-    //             password: 'password',
-    //             role: 'ADMIN',
-    //             email: 'omi.chaklader@gmail.com',
-    //         },
-    //     ]);
-    // });
-
-    // it('show method should return the correct user', async () => {
     //     const result = await store.show(1);
+    //     const hashedPassword = result.password;
+
     //     expect(result).toEqual({
     //         id: 1,
-    //         firstName: 'Chaklader',
-    //         lastName: 'Arefe',
-    //         password: 'password',
+    //         firstname: 'natalie',
+    //         lastname: 'portman',
+    //         password: hashedPassword,
     //         role: 'ADMIN',
-    //         email: 'omi.chaklader@gmail.com',
+    //         email: 'natalie.portman@gmail.com',
     //     });
     // });
 
-    // it('delete method should remove the user', async () => {
-    //     store.delete(1);
-    //     const result = await store.index();
+    it('delete method should remove the user', async () => {
+        store.delete(1);
+        const result = await store.index();
 
-    //     expect(result).toEqual([]);
-    // });
+        expect(result).toEqual([]);
+    });
 });

@@ -23,8 +23,8 @@ const tokenSecret = process.env.TOKEN_SECRET + '';
 const create = async (_req: Request, res: Response) => {
     try {
         const user: User = {
-            firstName: _req.body.firstName,
-            lastName: _req.body.lastName,
+            firstname: _req.body.firstName,
+            lastname: _req.body.lastName,
             password: _req.body.password,
             role: _req.body.role,
             email: _req.body.email,
@@ -135,8 +135,8 @@ const destroy = async (_req: Request, res: Response) => {
 */
 const update = async (_req: Request, res: Response) => {
     const user: User = {
-        firstName: _req.body.firstName,
-        lastName: _req.body.lastName,
+        firstname: _req.body.firstName,
+        lastname: _req.body.lastName,
         password: _req.body.password,
         role: _req.body.role,
         email: _req.body.email,

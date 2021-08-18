@@ -85,6 +85,10 @@ We can run the tests using the comamnd:
 
         $ yarn test
 
+This command will run the follwoing script:
+
+        "ENV=test && db-migrate --env test up && jasmine-ts && db-migrate reset --env test"
+
 If test(s) failed, the test database will not be dropped and we will need to manually reset before we can proceed again:
 
         $ db-migrate --env test reset

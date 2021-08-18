@@ -1,22 +1,6 @@
 import { ProductStore, Product } from '../products';
-import client from '../../database';
 
 const store = new ProductStore();
-
-/* 
-## Product data scheme
-
-export type Product = {
-    id?: number;
-    name: string;
-    price: number;
-    category?: string;
-};
-*/
-
-console.log('\n');
-console.log(client);
-console.log('\n');
 
 describe('Product Model', () => {
     /* 
@@ -62,53 +46,47 @@ describe('Product Model', () => {
         });
     });
 
-    // it('index method should return a list of products', async () => {
-    //     const result: Product[] = await store.index();
+    it('index method should return a list of products', async () => {
+        const result: Product[] = await store.index();
 
-    //     expect(result).toEqual([
-    //         {
-    //             id: 1,
-    //             name: 'War and Peace',
-    //             price: 250,
-    //             category: 'Literature',
-    //         },
-    //     ]);
-    // });
+        expect(result).toEqual([
+            {
+                id: 1,
+                name: 'War and Peace',
+                price: 250,
+                category: 'Literature',
+            },
+        ]);
+    });
 
-    // TODO:
-    // Expected $.length = 0 to equal 1.
-    // Expected $[0] = undefined to equal Object({ id: 1, name: 'War and Peace', price: 250, category: 'Literature' }).
+    it('productsByCategory method should return a list of products by category', async () => {
+        const result: Product[] = await store.productsByCategory('Literature');
 
-    // it('productsByCategory method should return a list of products by category', async () => {
-    //     const result: Product[] = await store.productsByCategory('Literature');
+        expect(result).toEqual([
+            {
+                id: 1,
+                name: 'War and Peace',
+                price: 250,
+                category: 'Literature',
+            },
+        ]);
+    });
 
-    //     expect(result).toEqual([
-    //         {
-    //             id: 1,
-    //             name: 'War and Peace',
-    //             price: 250,
-    //             category: 'Literature',
-    //         },
-    //     ]);
-    // });
+    it('show method should return the correct product', async () => {
+        const result: Product = await store.show(1);
 
-    // TODO: Expected undefined to equal Object({ id: 1, name: 'War and Peace', price: 250, category: 'Literature' }).
+        expect(result).toEqual({
+            id: 1,
+            name: 'War and Peace',
+            price: 250,
+            category: 'Literature',
+        });
+    });
 
-    // it('show method should return the correct product', async () => {
-    //     const result: Product = await store.show(1);
+    it('delete method should remove the product', async () => {
+        store.delete(1);
+        const result = await store.index();
 
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         name: 'War and Peace',
-    //         price: 250,
-    //         category: 'Literature'
-    //     });
-    // });
-
-    // it('delete method should remove the product', async () => {
-    //     store.delete(1);
-    //     const result = await store.index();
-
-    //     expect(result).toEqual([]);
-    // });
+        expect(result).toEqual([]);
+    });
 });

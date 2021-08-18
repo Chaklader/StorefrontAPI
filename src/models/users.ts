@@ -6,8 +6,8 @@ dotenv.config();
 
 export type User = {
     id?: number;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     password: string;
     role: string;
     email: string;
@@ -20,7 +20,7 @@ export class UsersManagement {
     async create(u: User): Promise<User> {
         try {
             const sql =
-                'INSERT INTO users (first_name, last_name, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
+                'INSERT INTO users (firstname, lastname, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
             // @ts-ignore
             const conn = await client.connect();
 
@@ -30,8 +30,8 @@ export class UsersManagement {
             );
 
             const result = await conn.query(sql, [
-                u.firstName,
-                u.lastName,
+                u.firstname,
+                u.lastname,
                 hashedPassword,
                 u.role,
                 u.email,
@@ -44,34 +44,43 @@ export class UsersManagement {
             return newUser;
         } catch (err) {
             throw new Error(
-                `Could not add new user with name ${u.firstName} ${u.lastName}. Error: ${err}`
+                `Could not add new user with name ${u.firstname} ${u.lastname}. Error: ${err}`
             );
         }
     }
 
+    /* 
+        the primary keu userId can't be updated
+    */
     async update(u: User, userId: number): Promise<User> {
         try {
             const sql =
-                'UPDATE users SET first_name=($1), last_name=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
+                'UPDATE users SET firstname=($1), lastname=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
             // @ts-ignore
             const conn = await client.connect();
 
+            const hashedPassword = bcrypt.hashSync(
+                u.password + pepper,
+                parseInt(saltRounds)
+            );
+
             const result = await conn.query(sql, [
-                u.firstName,
-                u.lastName,
-                u.password,
+                u.firstname,
+                u.lastname,
+                hashedPassword,
                 u.role,
                 u.email,
                 userId,
             ]);
 
-            const updatedUser = result.rows[0];
+            const updateResult: User = result.rows[0];
+
             conn.release();
 
-            return updatedUser;
+            return updateResult;
         } catch (err) {
             throw new Error(
-                `Could not updated user with name ${u.firstName} ${u.lastName}. Error: ${err}`
+                `Could not updated user with name ${u.firstname} ${u.lastname}. Error: ${err}`
             );
         }
     }
@@ -86,11 +95,11 @@ export class UsersManagement {
             const user = result.rows[0];
 
             if (bcrypt.compareSync(password + pepper, user.password)) {
-                console.log('yes');
+                console.log('user found with the provided email and password');
                 return user;
             }
 
-            console.log('no..');
+            console.log('No user found with the provided email and password');
         }
 
         return null;

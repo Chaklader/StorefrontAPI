@@ -87,7 +87,6 @@ export class ProductStore {
             const conn = await client.connect();
 
             const result = await conn.query(sql, [id]);
-
             const delProduct = result.rows[0];
 
             conn.release();
