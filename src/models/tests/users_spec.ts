@@ -42,25 +42,50 @@ describe('User Model', () => {
     */
     it('create method should add an user', async () => {
         const result: User = await store.create({
-            firstname: 'Chaklader',
-            lastname: 'Arefe',
-            password: 'password',
+            firstname: 'natalie',
+            lastname: 'portman',
+            password: 'init_password',
             role: 'ADMIN',
-            email: 'omi.chaklader@gmail.com',
+            email: 'natalie.portman@gmail.com',
         });
 
         const hashedPassword = result.password;
 
         const createdUser: User = {
             id: 1,
-            firstname: 'Chaklader',
-            lastname: 'Arefe',
+            firstname: 'natalie',
+            lastname: 'portman',
             password: hashedPassword,
             role: 'ADMIN',
-            email: 'omi.chaklader@gmail.com',
+            email: 'natalie.portman@gmail.com',
         };
 
         expect(result).toEqual(createdUser);
+    });
+
+    it('update method should update the respective user data', async () => {
+        const updatedUser = await store.update(
+            {
+                firstname: 'Chaklader',
+                lastname: 'Arefe',
+                password: 'password',
+                role: 'ADMIN',
+                email: 'omi.chaklader@gmail.com',
+            },
+            1
+        );
+
+        const result = await store.show(1);
+        const hashedPassword = result.password;
+
+        expect(result).toEqual({
+            id: 1,
+            firstname: 'Chaklader',
+                lastname: 'Arefe',
+                password: hashedPassword,
+                role: 'ADMIN',
+                email: 'omi.chaklader@gmail.com',
+        });
     });
 
     it('login method should return the user', async () => {
@@ -113,31 +138,6 @@ describe('User Model', () => {
             email: 'omi.chaklader@gmail.com',
         });
     });
-
-    // it('update method should update the respective user data', async () => {
-    //     store.update(
-    //         {
-    //             firstname: 'natalie',
-    //             lastname: 'portman',
-    //             password: 'password_renewed',
-    //             role: 'ADMIN',
-    //             email: 'natalie.portman@gmail.com',
-    //         },
-    //         1
-    //     );
-
-    //     const result = await store.show(1);
-    //     const hashedPassword = result.password;
-
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         firstname: 'natalie',
-    //         lastname: 'portman',
-    //         password: hashedPassword,
-    //         role: 'ADMIN',
-    //         email: 'natalie.portman@gmail.com',
-    //     });
-    // });
 
     it('delete method should remove the user', async () => {
         store.delete(1);
