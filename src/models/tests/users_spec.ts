@@ -54,29 +54,27 @@ describe('User Model', () => {
             at UserContext.<anonymous> (/Users/chaklader/Documents/Education/Udacity/Udacity_Nano_Degree/Full_Stack_JavaScript_Developer/C_3/P_3/StorefrontAPI/src/models/tests/users_spec.ts:66:24)
             at processTicksAndRejections (node:internal/process/task_queues:96:5)
     */
-    // it('create method should add an user', async () => {
-    //     const result = await store.create({
-    //         id: 1,
-    //         firstName: 'Chaklader',
-    //         lastName: 'Arefe',
-    //         password: 'password',
-    //         role: 'ADMIN',
-    //         email: 'omi.chaklader@gmail.com',
-    //     });
+    it('create method should add an user', async () => {
+        const result = await store.create({
+            id: 1,
+            firstName: 'Chaklader',
+            lastName: 'Arefe',
+            password: 'password',
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
+        });
 
-    //     // bcrypt.compareSync(password + pepper, user.password
+        const createdUser: User = {
+            id: 1,
+            firstName: 'Chaklader',
+            lastName: 'Arefe',
+            password: result.password,
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
+        };
 
-    //     const createdUser: User = {
-    //         id: 1,
-    //         firstName: 'Chaklader',
-    //         lastName: 'Arefe',
-    //         password: result.password,
-    //         role: 'ADMIN',
-    //         email: 'omi.chaklader@gmail.com',
-    //     };
-
-    //     expect(result).toEqual(createdUser);
-    // });
+        expect(result).toEqual(createdUser);
+    });
 
     // it('update method should update the respective user data', async () => {
     //     const result = await store.update(
