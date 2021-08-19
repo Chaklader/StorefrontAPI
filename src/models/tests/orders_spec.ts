@@ -1,6 +1,9 @@
 import { OrderStore, Order } from '../orders';
+import { User } from '../users';
+import userStore from './users_spec';
 
 const store = new OrderStore();
+// const userStore = new UsersManagement();
 
 describe('Order Model', () => {
     /* 
@@ -29,22 +32,33 @@ describe('Order Model', () => {
     /* 
      check if the methods are functioning well
     */
+    it('create method should add an order', async () => {
+        
+        // const rst: User = await userStore.create({
+        //     firstname: 'merlion',
+        //     lastname: 'monroe',
+        //     password: 'password_updated',
+        //     role: 'COMMUNITY',
+        //     email: 'm.monroe@gmail.com',
+        // });
+        // const users = userStore.index();
 
-    // TODO: Error: Could not add new order for user ID 12345 for Error: error: insert or update on table "orders" violates foreign key constraint "orders_user_id_fkey"
+        // console.log('----------------');
+        // console.log('Number of exisiting users = ' + (await users).length);
+        // console.log('----------------');
 
-    // it('create method should add an order', async () => {
-    //     const result = await store.create({
-    //         id: 1,
-    //         userId: 12345,
-    //         status: 'open',
-    //     });
+        const result = await store.create({
+            id: 1,
+            userId: 1,
+            status: 'open',
+        });
 
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         userId: 12345,
-    //         status: 'open',
-    //     });
-    // });
+        expect(result).toEqual({
+            id: 1,
+            userId: 1,
+            status: 'open',
+        });
+    });
 
     // ::NOTES::
     // TODO: the create method is not working, so its pointless to test further

@@ -7,41 +7,41 @@ dotenv.config();
 const pepper = process.env.BYCRYPT_PASSWORD;
 const saltRounds = '' + process.env.SALT_ROUNDS;
 
-const store = new UsersManagement();
+const userStore = new UsersManagement();
 
 describe('User Model', () => {
     /* 
         check if the methods are defined
     */
     it('should have a create method', () => {
-        expect(store.create).toBeDefined();
+        expect(userStore.create).toBeDefined();
     });
 
     it('should have a update method', () => {
-        expect(store.update).toBeDefined();
+        expect(userStore.update).toBeDefined();
     });
 
     it('should have a login method', () => {
-        expect(store.login).toBeDefined();
+        expect(userStore.login).toBeDefined();
     });
 
     it('should have an index method', () => {
-        expect(store.index).toBeDefined();
+        expect(userStore.index).toBeDefined();
     });
 
     it('should have a show method', () => {
-        expect(store.show).toBeDefined();
+        expect(userStore.show).toBeDefined();
     });
 
     it('should have a delete method', () => {
-        expect(store.delete).toBeDefined();
+        expect(userStore.delete).toBeDefined();
     });
 
     /* 
         check if the methods are functioning well
     */
     it('create method should add an user', async () => {
-        const result: User = await store.create({
+        const result: User = await userStore.create({
             firstname: 'natalie',
             lastname: 'portman',
             password: 'init_password',
@@ -64,7 +64,7 @@ describe('User Model', () => {
     });
 
     it('update method should update the respective user data', async () => {
-        const updatedUser = await store.update(
+        const updatedUser = await userStore.update(
             {
                 firstname: 'Chaklader',
                 lastname: 'Arefe',
@@ -75,21 +75,24 @@ describe('User Model', () => {
             1
         );
 
-        const result = await store.show(1);
+        const result = await userStore.show(1);
         const hashedPassword = result.password;
 
         expect(result).toEqual({
             id: 1,
             firstname: 'Chaklader',
-                lastname: 'Arefe',
-                password: hashedPassword,
-                role: 'ADMIN',
-                email: 'omi.chaklader@gmail.com',
+            lastname: 'Arefe',
+            password: hashedPassword,
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
         });
     });
 
     it('login method should return the user', async () => {
-        const result = await store.login('omi.chaklader@gmail.com', 'password');
+        const result = await userStore.login(
+            'omi.chaklader@gmail.com',
+            'password'
+        );
 
         if (result === null) {
             throw new Error('No user found for the email and password.');
@@ -108,7 +111,7 @@ describe('User Model', () => {
     });
 
     it('index method should return a list of users', async () => {
-        const result = await store.index();
+        const result = await userStore.index();
 
         const hashedPassword = result[0].password;
 
@@ -125,7 +128,7 @@ describe('User Model', () => {
     });
 
     it('show method should return the correct user', async () => {
-        const result = await store.show(1);
+        const result = await userStore.show(1);
 
         const hashedPassword = result.password;
 
@@ -140,9 +143,11 @@ describe('User Model', () => {
     });
 
     it('delete method should remove the user', async () => {
-        store.delete(1);
-        const result = await store.index();
+        userStore.delete(1);
+        const result = await userStore.index();
 
         expect(result).toEqual([]);
     });
 });
+
+export default userStore;
