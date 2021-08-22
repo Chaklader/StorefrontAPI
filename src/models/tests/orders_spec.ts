@@ -6,36 +6,8 @@ const uStore = new UsersManagement();
 const store = new OrderStore();
 
 describe('Order Model', () => {
-    //
     let testUser: User = {} as User;
-
-    beforeAll(async () => {
-        testUser = await uStore.create({
-            firstname: 'merlion',
-            lastname: 'monroe',
-            password: 'password',
-            role: 'ADMIN',
-            email: 'm.monroe@gmail.com',
-        });
-
-        console.log('\n');
-        console.log(testUser);
-        console.log('\n');
-
-        const id: number | undefined = testUser.id;
-
-        if (id) {
-            uStore.delete(id);
-        }
-    });
-
-    afterAll(function () {
-        const id: number | undefined = testUser.id;
-
-        if (id) {
-            uStore.delete(id);
-        }
-    });
+    let testOrder: Order = {} as Order;
 
     /* 
      check if the methods are defined well
@@ -63,37 +35,26 @@ describe('Order Model', () => {
     /* 
      check if the methods are functioning well
     */
-
-    // TODO: Error: Could not add new order for user ID 12345 for Error: error: insert or update on table "orders" violates foreign key constraint "orders_user_id_fkey"
-
     it('create method should add an order', async () => {
-        // const u: User = await uStore.create({
-        //     firstname: 'merlion',
-        //     lastname: 'monroe',
-        //     password: 'password_updated',
-        //     role: 'COMMUNITY',
-        //     email: 'm.monroe@gmail.com',
-        // });
-        // if (u == null || u.id === undefined) {
-        //     return;
-        // }
-        // console.log(u);
-        // const t = await uStore.delete(u.id);
+        testUser = await uStore.create({
+            firstname: 'merlion',
+            lastname: 'monroe',
+            password: 'password',
+            role: 'ADMIN',
+            email: 'm.monroe@gmail.com',
+        });
 
-
-        if(testUser && testUser.id){
-
-            const result = await store.create({
-
-                userId: 1,
+        if (testUser && testUser.id) {
+            testOrder = await store.create({
+                userId: testUser.id,
                 status: 'open',
             });
 
-            // expect(result).toEqual({
-            //     id: result.id,
-            //     userId: testUser.id,
-            //     status: 'open',
-            // });
+            expect(JSON.parse(JSON.stringify(testOrder))).toEqual({
+                id: 1,
+                status: 'open',
+                user_id: '1',
+            });
         }
     });
 
@@ -110,16 +71,22 @@ describe('Order Model', () => {
     //     });
     // });
 
-    // it('index method should return a list of orders', async () => {
-    //     const result = await store.index();
-    //     expect(result).toEqual([
-    //         {
-    //             id: 1,
-    //             userId: 12345,
-    //             status: 'open',
-    //         },
-    //     ]);
-    // });
+    it('index method should return a list of orders', async () => {
+        const result = await store.index();
+
+
+        if(testUser.id){
+
+            expect(JSON.stringify(result)).toContain(JSON.stringify([
+                {
+                    id: testOrder.id,
+                    status: 'open',
+                    user_id: testUser.id+"",
+                },
+            ]));
+        }
+
+    });
 
     // it('show method should return the correct order', async () => {
     //     const result = await store.show(1);

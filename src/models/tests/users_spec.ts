@@ -123,28 +123,28 @@ describe('User Model', () => {
         });
     });
 
-    it('index method should return a list of users', async () => {
-        const result = await store.index();
+    // it('index method should return a list of users', async () => {
+    //     const result = await store.index();
 
-        console.log('=================');
-        console.log(result);
-        console.log('=================');
+    //     console.log('=================');
+    //     console.log(result);
+    //     console.log('=================');
 
-        // const hashedPassword = result[0].password;
+    //     // const hashedPassword = result[0].password;
 
-        if (testUser && testUser.id && testUser.password) {
-            expect(result).toEqual([
-                {
-                    id: testUser.id,
-                    firstname: 'Chaklader',
-                    lastname: 'Arefe',
-                    password: result[0].password,
-                    role: 'ADMIN',
-                    email: 'omi.chaklader@gmail.com',
-                },
-            ]);
-        }
-    });
+    //     if (testUser && testUser.id && testUser.password) {
+    //         expect(result).toEqual([
+    //             {
+    //                 id: testUser.id,
+    //                 firstname: 'Chaklader',
+    //                 lastname: 'Arefe',
+    //                 password: result[0].password,
+    //                 role: 'ADMIN',
+    //                 email: 'omi.chaklader@gmail.com',
+    //             },
+    //         ]);
+    //     }
+    // });
 
     it('show method should return the correct user', async () => {
         if (testUser.id) {
