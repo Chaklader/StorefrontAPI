@@ -145,3 +145,5 @@ These are the notes from a meeting with the frontend developer that describe wha
 -   status of order (active or complete)
 
 ![alt text](images/database/orders.png)
+
+![alt text](images/database/order_products.png)

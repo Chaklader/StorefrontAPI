@@ -3,6 +3,10 @@ import { ProductStore, Product } from '../products';
 const store = new ProductStore();
 
 describe('Product Model', () => {
+
+    let createdProductId: number = 0;
+
+
     /* 
       check if the methods in the product model are defined
     */
@@ -26,20 +30,24 @@ describe('Product Model', () => {
         expect(store.delete).toBeDefined();
     });
 
+
     /* 
       check if the methods in the product model are functioning
       as expected
     */
     it('create method should add a product', async () => {
         const result = await store.create({
-            id: 1,
             name: 'War and Peace',
             price: 250,
             category: 'Literature',
         });
 
+        if (result.id) {
+            createdProductId = result.id;
+        }
+
         expect(result).toEqual({
-            id: 1,
+            id: createdProductId,
             name: 'War and Peace',
             price: 250,
             category: 'Literature',
@@ -84,8 +92,15 @@ describe('Product Model', () => {
     });
 
     it('delete method should remove the product', async () => {
-        store.delete(1);
+        store.delete(createdProductId);
         const result = await store.index();
+
+        const productIds: (number | undefined)[] = result.map(({ id }) => id);
+
+        if (productIds && productIds.length > 0) {
+            expect(false).toEqual(productIds.includes(createdProductId));
+            return;
+        }
 
         expect(result).toEqual([]);
     });

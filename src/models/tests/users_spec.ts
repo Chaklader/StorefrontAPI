@@ -1,15 +1,10 @@
 import { UsersManagement, User } from '../users';
-import dotenv from 'dotenv';
-import bcrypt from 'bcrypt';
-
-dotenv.config();
-
-const pepper = process.env.BYCRYPT_PASSWORD;
-const saltRounds = '' + process.env.SALT_ROUNDS;
 
 const store = new UsersManagement();
 
 describe('User Model', () => {
+    let testUser: User = {} as User;
+
     /* 
         check if the methods are defined
     */
@@ -49,10 +44,16 @@ describe('User Model', () => {
             email: 'natalie.portman@gmail.com',
         });
 
+        testUser = result;
+
         const hashedPassword = result.password;
 
+        console.log('\n');
+        console.log('result.id = ' + result.id);
+        console.log('\n');
+
         const createdUser: User = {
-            id: 1,
+            id: result.id,
             firstname: 'natalie',
             lastname: 'portman',
             password: hashedPassword,
@@ -72,20 +73,35 @@ describe('User Model', () => {
                 role: 'ADMIN',
                 email: 'omi.chaklader@gmail.com',
             },
-            1
+            2
         );
 
-        const result = await store.show(1);
-        const hashedPassword = result.password;
+        let hashedPassword;
+        let result;
 
-        expect(result).toEqual({
-            id: 1,
-            firstname: 'Chaklader',
+        if (testUser.id) {
+            result = await store.show(2);
+            hashedPassword = result.password;
+
+            console.log('-----------------');
+            console.log(result);
+            console.log('-----------------');
+
+            console.log('\n');
+            console.log('testUser.id ' + testUser.id);
+            console.log('\n');
+        }
+
+        if (hashedPassword) {
+            expect(result).toEqual({
+                id: 2,
+                firstname: 'Chaklader',
                 lastname: 'Arefe',
                 password: hashedPassword,
                 role: 'ADMIN',
                 email: 'omi.chaklader@gmail.com',
-        });
+            });
+        }
     });
 
     it('login method should return the user', async () => {
@@ -98,7 +114,7 @@ describe('User Model', () => {
         const hashedPassword = result.password;
 
         expect(result).toEqual({
-            id: 1,
+            id: result.id,
             firstname: 'Chaklader',
             lastname: 'Arefe',
             password: hashedPassword,
@@ -110,39 +126,49 @@ describe('User Model', () => {
     it('index method should return a list of users', async () => {
         const result = await store.index();
 
-        const hashedPassword = result[0].password;
+        console.log('=================');
+        console.log(result);
+        console.log('=================');
 
-        expect(result).toEqual([
-            {
-                id: 1,
+        // const hashedPassword = result[0].password;
+
+        if (testUser && testUser.id && testUser.password) {
+            expect(result).toEqual([
+                {
+                    id: testUser.id,
+                    firstname: 'Chaklader',
+                    lastname: 'Arefe',
+                    password: result[0].password,
+                    role: 'ADMIN',
+                    email: 'omi.chaklader@gmail.com',
+                },
+            ]);
+        }
+    });
+
+    it('show method should return the correct user', async () => {
+        if (testUser.id) {
+            const result = await store.show(testUser.id);
+
+            const hashedPassword = result.password;
+
+            expect(result).toEqual({
+                id: testUser.id,
                 firstname: 'Chaklader',
                 lastname: 'Arefe',
                 password: hashedPassword,
                 role: 'ADMIN',
                 email: 'omi.chaklader@gmail.com',
-            },
-        ]);
-    });
-
-    it('show method should return the correct user', async () => {
-        const result = await store.show(1);
-
-        const hashedPassword = result.password;
-
-        expect(result).toEqual({
-            id: 1,
-            firstname: 'Chaklader',
-            lastname: 'Arefe',
-            password: hashedPassword,
-            role: 'ADMIN',
-            email: 'omi.chaklader@gmail.com',
-        });
+            });
+        }
     });
 
     it('delete method should remove the user', async () => {
-        store.delete(1);
-        const result = await store.index();
+        if (testUser.id) {
+            store.delete(testUser.id);
+        }
+        // const result = await store.index();
 
-        expect(result).toEqual([]);
+        // expect(result).toEqual([]);
     });
 });
