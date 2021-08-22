@@ -1,3 +1,4 @@
+import { Product, ProductStore } from '../products';
 import userRoute from '../../handlers/users';
 import { OrderStore, Order } from '../orders';
 import { UsersManagement, User } from '../users';
@@ -8,6 +9,19 @@ const store = new OrderStore();
 describe('Order Model', () => {
     let testUser: User = {} as User;
     let testOrder: Order = {} as Order;
+    let testProduct: Product = {} as Product;
+
+
+    beforeAll(async () => {
+        testUser = await  uStore.create({
+            firstname: 'merlion',
+            lastname: 'monroe',
+            password: 'password',
+            role: 'ADMIN',
+            email: 'm.monroe@gmail.com',
+        });
+    });
+
 
     /* 
      check if the methods are defined well
@@ -36,13 +50,6 @@ describe('Order Model', () => {
      check if the methods are functioning well
     */
     it('create method should add an order', async () => {
-        testUser = await uStore.create({
-            firstname: 'merlion',
-            lastname: 'monroe',
-            password: 'password',
-            role: 'ADMIN',
-            email: 'm.monroe@gmail.com',
-        });
 
         if (testUser && testUser.id) {
             testOrder = await store.create({
@@ -62,7 +69,7 @@ describe('Order Model', () => {
     // TODO: the create method is not working, so its pointless to test further
 
     // it('addProduct method should add products to an open order', async () => {
-    //     const result: Order = await store.addProduct(100, 1, 1);
+    //     const result: Order = await store.addProduct(100, testOrder.id, 1);
 
     //     expect(result).toEqual({
     //         id: 1,
