@@ -1,9 +1,9 @@
 import { Product, ProductStore } from '../products';
-import userRoute from '../../handlers/users';
 import { OrderStore, Order } from '../orders';
 import { UsersManagement, User } from '../users';
 
 const uStore = new UsersManagement();
+const pStore = new ProductStore();
 const store = new OrderStore();
 
 describe('Order Model', () => {
@@ -20,6 +20,24 @@ describe('Order Model', () => {
             role: 'ADMIN',
             email: 'm.monroe@gmail.com',
         });
+
+
+        testProduct = await pStore.create({
+            name: 'Bobby Fischer Teaches Chess',
+            price: 457,
+            category: 'Chess',
+        });
+    });
+
+    afterAll(async()=>{
+
+        if(testUser.id && testOrder.id && testProduct.id){
+
+             store.delete(testOrder.id);
+            //  await pStore.delete(testProduct.id);
+            //  await uStore.delete(testUser.id);
+            
+        }
     });
 
 

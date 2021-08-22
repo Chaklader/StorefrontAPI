@@ -3,9 +3,7 @@ import { ProductStore, Product } from '../products';
 const store = new ProductStore();
 
 describe('Product Model', () => {
-
     let createdProductId: number = 0;
-
 
     /* 
       check if the methods in the product model are defined
@@ -29,7 +27,6 @@ describe('Product Model', () => {
     it('should have a delete method', () => {
         expect(store.delete).toBeDefined();
     });
-
 
     /* 
       check if the methods in the product model are functioning
@@ -60,11 +57,23 @@ describe('Product Model', () => {
         expect(result).toEqual([
             {
                 id: 1,
+                name: 'Bobby Fischer Teaches Chess',
+                price: 457,
+                category: 'Chess',
+            },
+            {
+                id: 2,
                 name: 'War and Peace',
                 price: 250,
                 category: 'Literature',
             },
         ]);
+
+        console.log('---------ffff-------');
+        console.log(result.length);
+        console.log('\n');
+        console.log(result);
+        console.log('---------pppp-------');
     });
 
     it('productsByCategory method should return a list of products by category', async () => {
@@ -72,7 +81,7 @@ describe('Product Model', () => {
 
         expect(result).toEqual([
             {
-                id: 1,
+                id: 2,
                 name: 'War and Peace',
                 price: 250,
                 category: 'Literature',
@@ -81,10 +90,10 @@ describe('Product Model', () => {
     });
 
     it('show method should return the correct product', async () => {
-        const result: Product = await store.show(1);
+        const result: Product = await store.show(2);
 
         expect(result).toEqual({
-            id: 1,
+            id: 2,
             name: 'War and Peace',
             price: 250,
             category: 'Literature',
