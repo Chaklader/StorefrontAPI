@@ -16,6 +16,12 @@ const store = new OrderStore();
 
 /* 
     an order can only be created by the respective user after the token validation
+    and the order status needs to be set as "open". The respective payload example:
+
+        {
+            "userId": 1,
+            "status": "open"
+        }
 */
 const create = async (_req: Request, res: Response) => {
     try {
@@ -61,7 +67,6 @@ const create = async (_req: Request, res: Response) => {
     only the respective user will be able to add more products to their order 
     after the token validation...
 */
-// TODO: check if the order_products table is populated ...
 const addProduct = async (_req: Request, res: Response) => {
     // params
     const orderId: number = parseInt(_req.params.orderId);
@@ -97,7 +102,8 @@ const addProduct = async (_req: Request, res: Response) => {
         const orderProduct = await store.addProduct(
             quantity,
             orderId,
-            productId
+            productId, 
+            userId
         );
 
         res.json(orderProduct);

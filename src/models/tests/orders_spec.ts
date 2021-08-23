@@ -82,6 +82,29 @@ describe('Order Model', () => {
         });
     });
 
+    // it('addProduct method should add products to an order', async () => {
+    //     if (TEST_USER == null || TEST_USER.id == null) {
+    //         throw new Error('Test user is not created ');
+    //     }
+
+    //     if (TEST_PRODUCT == null || TEST_PRODUCT.id == null) {
+    //         throw new Error('Test product is not created ');
+    //     }
+
+    //     if (TEST_ORDER == null || TEST_ORDER.id == null) {
+    //         throw new Error('Test product is not created ');
+    //     }
+
+    //     const result = await orderStore.addProduct(150, TEST_ORDER.id, TEST_PRODUCT.id);
+
+    //     expect(result).toEqual({
+    //         "id": 1,
+    //         "quantity": 20,
+    //         "order_id": "1",
+    //         "product_id": "1"
+    //     });
+    // });
+
     it('index method should return a list of orders', async () => {
         if (TEST_USER == null || TEST_USER.id == null) {
             throw new Error('Test user is not created ');

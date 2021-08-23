@@ -10,12 +10,17 @@ export type Product = {
 export class ProductStore {
     async create(p: Product): Promise<Product> {
         try {
+            console.log('----create product ------');
             const sql =
                 'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *';
             // @ts-ignore
             const conn = await client.connect();
 
             const result = await conn.query(sql, [p.name, p.price, p.category]);
+            
+            console.log('----------');
+            console.log(result);
+            console.log('----------');
 
             const newProduct = result.rows[0];
             let parsedNewProduct: any = JSON.parse(JSON.stringify(newProduct));

@@ -68,12 +68,14 @@ var create = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
                     role: _req.body.role,
                     email: _req.body.email
                 };
+                console.log(user);
                 return [4 /*yield*/, store.create(user)];
             case 1:
                 newUser = _a.sent();
+                console.log(newUser);
                 token = jsonwebtoken_1["default"].sign({ user: newUser }, tokenSecret);
-                res.json(token);
-                return [3 /*break*/, 3];
+                console.log(token);
+                return [2 /*return*/, res.json(token)];
             case 2:
                 err_1 = _a.sent();
                 res.status(400);

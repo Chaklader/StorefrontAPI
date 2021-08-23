@@ -24,7 +24,15 @@ const create = async (_req: Request, res: Response) => {
             category: _req.body.category,
         };
 
+        console.log('----------product--------');
+        console.log(product);
+        console.log('----------product--------');
+
         const newProduct = await store.create(product);
+
+        console.log('----------new product--------');
+        console.log(newProduct);
+        console.log('----------new product--------');
         
         res.json(newProduct);
     } catch (err) {
@@ -107,6 +115,8 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
         const authorizationHeader = _req.headers.authorization + '';
         const token = authorizationHeader.split(' ')[1];
         const decoded: any = jwt.verify(token, process.env.TOKEN_SECRET + '');
+
+        console.log(decoded);
 
         const userRole = decoded.user.role;
 
