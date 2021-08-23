@@ -113,17 +113,13 @@ describe('User Model', () => {
     it('index method should return a list of users', async () => {
         const result = await store.index();
 
-        expect(result[0].id).toEqual(1);
-        expect(result[0].firstname).toEqual('merlion');
-        expect(result[0].lastname).toEqual('monroe');
-        expect(result[0].role).toEqual('ADMIN');
-        expect(result[0].email).toEqual('m.monroe@gmail.com');
 
-        expect(result[1].id).toEqual(2);
-        expect(result[1].firstname).toEqual('Chaklader');
-        expect(result[1].lastname).toEqual('Arefe');
-        expect(result[1].role).toEqual('ADMIN');
-        expect(result[1].email).toEqual('omi.chaklader@gmail.com');
+        expect(result[0].id).toEqual(2);
+        // expect(result[0].password).toEqual(testUser.password);
+        expect(result[0].firstname).toEqual('Chaklader');
+        expect(result[0].lastname).toEqual('Arefe');
+        expect(result[0].role).toEqual('ADMIN');
+        expect(result[0].email).toEqual('omi.chaklader@gmail.com');
     });
 
     it('show method should return the correct user', async () => {
@@ -149,6 +145,6 @@ describe('User Model', () => {
         }
         const result = await store.index();
 
-        expect(result.length).toEqual(1);
+        expect(result.length).toEqual(0);
     });
 });

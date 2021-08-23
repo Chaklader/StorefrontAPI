@@ -30,8 +30,8 @@ describe('Order Model', () => {
     afterAll(async () => {
         if (testUser.id && testOrder.id && testProduct.id) {
             store.delete(testOrder.id);
-            //  await pStore.delete(testProduct.id);
-            //  await uStore.delete(testUser.id);
+             await pStore.delete(testProduct.id);
+             await uStore.delete(testUser.id);
         }
     });
 
@@ -75,26 +75,6 @@ describe('Order Model', () => {
             });
         }
     });
-
-    // it('addProduct method should add products to an open order', async () => {
-    //     if (testOrder.id && testProduct.id) {
-    //         const result: Order = await store.addProduct(
-    //             100,
-    //             testOrder.id,
-    //             testProduct.id
-    //         );
-
-    //         // expect(result).toEqual({
-    //         //     id: 1,
-    //         //     userId: 12345,
-    //         //     status: 'open',
-    //         // });
-
-    //         return
-    //     }
-
-    //     console.log('testOrder.id && testProduct.id');
-    // });
 
     it('index method should return a list of orders', async () => {
         const result = await store.index();
