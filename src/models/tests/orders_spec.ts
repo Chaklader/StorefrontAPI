@@ -11,16 +11,14 @@ describe('Order Model', () => {
     let testOrder: Order = {} as Order;
     let testProduct: Product = {} as Product;
 
-
     beforeAll(async () => {
-        testUser = await  uStore.create({
+        testUser = await uStore.create({
             firstname: 'merlion',
             lastname: 'monroe',
             password: 'password',
             role: 'ADMIN',
             email: 'm.monroe@gmail.com',
         });
-
 
         testProduct = await pStore.create({
             name: 'Bobby Fischer Teaches Chess',
@@ -29,17 +27,13 @@ describe('Order Model', () => {
         });
     });
 
-    afterAll(async()=>{
-
-        if(testUser.id && testOrder.id && testProduct.id){
-
-             store.delete(testOrder.id);
+    afterAll(async () => {
+        if (testUser.id && testOrder.id && testProduct.id) {
+            store.delete(testOrder.id);
             //  await pStore.delete(testProduct.id);
             //  await uStore.delete(testUser.id);
-            
         }
     });
-
 
     /* 
      check if the methods are defined well
@@ -68,7 +62,6 @@ describe('Order Model', () => {
      check if the methods are functioning well
     */
     it('create method should add an order', async () => {
-
         if (testUser && testUser.id) {
             testOrder = await store.create({
                 userId: testUser.id,
@@ -87,30 +80,45 @@ describe('Order Model', () => {
     // TODO: the create method is not working, so its pointless to test further
 
     // it('addProduct method should add products to an open order', async () => {
-    //     const result: Order = await store.addProduct(100, testOrder.id, 1);
+    //     if (testOrder.id && testProduct.id) {
+    //         // const result: Order = await store.addProduct(
+    //         //     100,
+    //         //     testOrder.id,
+    //         //     testProduct.id
+    //         // );
 
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         userId: 12345,
-    //         status: 'open',
-    //     });
+    //         // expect(result).toEqual({
+    //         //     id: 1,
+    //         //     userId: 12345,
+    //         //     status: 'open',
+    //         // });
+
+    //         return
+    //     }
+
+    //     console.log('testOrder.id && testProduct.id');
     // });
 
     it('index method should return a list of orders', async () => {
         const result = await store.index();
 
+        // [ { id: 1, status: 'open', user_id: '1' } ]
 
-        if(testUser.id){
+        console.log('------------order index -------------');
+        console.log(result);
+        console.log('------------order index -------------');
 
-            expect(JSON.stringify(result)).toContain(JSON.stringify([
-                {
-                    id: testOrder.id,
-                    status: 'open',
-                    user_id: testUser.id+"",
-                },
-            ]));
+        if (testUser.id) {
+            expect(JSON.stringify(result)).toContain(
+                JSON.stringify([
+                    {
+                        id: testOrder.id,
+                        status: 'open',
+                        user_id: testUser.id + '',
+                    },
+                ])
+            );
         }
-
     });
 
     // it('show method should return the correct order', async () => {
@@ -130,4 +138,5 @@ describe('Order Model', () => {
 
     //     expect(result).toEqual([]);
     // });
+
 });

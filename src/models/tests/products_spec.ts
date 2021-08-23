@@ -68,12 +68,6 @@ describe('Product Model', () => {
                 category: 'Literature',
             },
         ]);
-
-        console.log('---------ffff-------');
-        console.log(result.length);
-        console.log('\n');
-        console.log(result);
-        console.log('---------pppp-------');
     });
 
     it('productsByCategory method should return a list of products by category', async () => {

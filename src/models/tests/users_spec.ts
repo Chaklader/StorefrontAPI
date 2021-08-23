@@ -45,12 +45,7 @@ describe('User Model', () => {
         });
 
         testUser = result;
-
         const hashedPassword = result.password;
-
-        console.log('\n');
-        console.log('result.id = ' + result.id);
-        console.log('\n');
 
         const createdUser: User = {
             id: result.id,
@@ -82,14 +77,6 @@ describe('User Model', () => {
         if (testUser.id) {
             result = await store.show(2);
             hashedPassword = result.password;
-
-            console.log('-----------------');
-            console.log(result);
-            console.log('-----------------');
-
-            console.log('\n');
-            console.log('testUser.id ' + testUser.id);
-            console.log('\n');
         }
 
         if (hashedPassword) {
@@ -123,28 +110,21 @@ describe('User Model', () => {
         });
     });
 
-    // it('index method should return a list of users', async () => {
-    //     const result = await store.index();
+    it('index method should return a list of users', async () => {
+        const result = await store.index();
 
-    //     console.log('=================');
-    //     console.log(result);
-    //     console.log('=================');
+        expect(result[0].id).toEqual(1);
+        expect(result[0].firstname).toEqual('merlion');
+        expect(result[0].lastname).toEqual('monroe');
+        expect(result[0].role).toEqual('ADMIN');
+        expect(result[0].email).toEqual('m.monroe@gmail.com');
 
-    //     // const hashedPassword = result[0].password;
-
-    //     if (testUser && testUser.id && testUser.password) {
-    //         expect(result).toEqual([
-    //             {
-    //                 id: testUser.id,
-    //                 firstname: 'Chaklader',
-    //                 lastname: 'Arefe',
-    //                 password: result[0].password,
-    //                 role: 'ADMIN',
-    //                 email: 'omi.chaklader@gmail.com',
-    //             },
-    //         ]);
-    //     }
-    // });
+        expect(result[1].id).toEqual(2);
+        expect(result[1].firstname).toEqual('Chaklader');
+        expect(result[1].lastname).toEqual('Arefe');
+        expect(result[1].role).toEqual('ADMIN');
+        expect(result[1].email).toEqual('omi.chaklader@gmail.com');
+    });
 
     it('show method should return the correct user', async () => {
         if (testUser.id) {
@@ -167,8 +147,8 @@ describe('User Model', () => {
         if (testUser.id) {
             store.delete(testUser.id);
         }
-        // const result = await store.index();
+        const result = await store.index();
 
-        // expect(result).toEqual([]);
+        expect(result.length).toEqual(1);
     });
 });
