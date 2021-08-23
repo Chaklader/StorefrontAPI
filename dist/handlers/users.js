@@ -62,8 +62,8 @@ var create = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = {
-                    firstName: _req.body.firstName,
-                    lastName: _req.body.lastName,
+                    firstname: _req.body.firstName,
+                    lastname: _req.body.lastName,
                     password: _req.body.password,
                     role: _req.body.role,
                     email: _req.body.email
@@ -211,8 +211,8 @@ var update = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
         switch (_a.label) {
             case 0:
                 user = {
-                    firstName: _req.body.firstName,
-                    lastName: _req.body.lastName,
+                    firstname: _req.body.firstName,
+                    lastname: _req.body.lastName,
                     password: _req.body.password,
                     role: _req.body.role,
                     email: _req.body.email

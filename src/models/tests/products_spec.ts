@@ -3,11 +3,20 @@ import { ProductStore, Product } from '../products';
 const store = new ProductStore();
 
 describe('Product Model', () => {
-    let createdProductId: number = 0;
+    let TEST_PRODUCT: Product = {} as Product;
 
-    /* 
-      check if the methods in the product model are defined
-    */
+    beforeAll(function () {
+        console.log('\n');
+        console.log('Start to run the tests for the product model');
+        console.log('\n');
+    });
+
+    afterAll(function () {
+        console.log('\n');
+        console.log('End of running all the tests for the product model');
+        console.log('\n');
+    });
+
     it('should have a create method', () => {
         expect(store.index).toBeDefined();
     });
@@ -28,23 +37,21 @@ describe('Product Model', () => {
         expect(store.delete).toBeDefined();
     });
 
-    /* 
-      check if the methods in the product model are functioning
-      as expected
-    */
     it('create method should add a product', async () => {
-        const result = await store.create({
+        const createdProduct = await store.create({
             name: 'War and Peace',
             price: 250,
             category: 'Literature',
         });
 
-        if (result.id) {
-            createdProductId = result.id;
+        TEST_PRODUCT = createdProduct;
+
+        if (TEST_PRODUCT == null || TEST_PRODUCT.id == null) {
+            throw new Error('Test product is not created ');
         }
 
-        expect(result).toEqual({
-            id: createdProductId,
+        expect(createdProduct).toEqual({
+            id: TEST_PRODUCT.id,
             name: 'War and Peace',
             price: 250,
             category: 'Literature',
@@ -52,11 +59,11 @@ describe('Product Model', () => {
     });
 
     it('index method should return a list of products', async () => {
-        const result: Product[] = await store.index();
+        const allProducts: Product[] = await store.index();
 
-        expect(result).toEqual([
+        expect(allProducts).toEqual([
             {
-                id: 2,
+                id: TEST_PRODUCT.id,
                 name: 'War and Peace',
                 price: 250,
                 category: 'Literature',
@@ -65,11 +72,13 @@ describe('Product Model', () => {
     });
 
     it('productsByCategory method should return a list of products by category', async () => {
-        const result: Product[] = await store.productsByCategory('Literature');
+        const allProductsByCategory: Product[] = await store.productsByCategory(
+            'Literature'
+        );
 
-        expect(result).toEqual([
+        expect(allProductsByCategory).toEqual([
             {
-                id: createdProductId,
+                id: TEST_PRODUCT.id,
                 name: 'War and Peace',
                 price: 250,
                 category: 'Literature',
@@ -78,10 +87,14 @@ describe('Product Model', () => {
     });
 
     it('show method should return the correct product', async () => {
-        const result: Product = await store.show(2);
+        if (TEST_PRODUCT == null || TEST_PRODUCT.id == null) {
+            throw new Error('Test product is not created ');
+        }
 
-        expect(result).toEqual({
-            id: 2,
+        const productById: Product = await store.show(TEST_PRODUCT.id);
+
+        expect(productById).toEqual({
+            id: TEST_PRODUCT.id,
             name: 'War and Peace',
             price: 250,
             category: 'Literature',
@@ -89,21 +102,12 @@ describe('Product Model', () => {
     });
 
     it('delete method should remove the product', async () => {
-        const deleteProduct = await store.delete(2);
+        if (TEST_PRODUCT == null || TEST_PRODUCT.id == null) {
+            throw new Error('Test product is not created ');
+        }
+        
+        const deleteProduct = await store.delete(TEST_PRODUCT.id);
         const result = await store.index();
-
-        console.log('------xxxxxx-------------');
-        console.log(result);
-        console.log('----------xxx---------');
-
-        // expect(result).toEqual([
-        //     {
-        //         id: 1,
-        //         name: 'Bobby Fischer Teaches Chess',
-        //         price: 457,
-        //         category: 'Chess',
-        //     },
-        // ]);
 
         expect(result).toEqual([]);
     });

@@ -3,11 +3,20 @@ import { UsersManagement, User } from '../users';
 const store = new UsersManagement();
 
 describe('User Model', () => {
-    let testUser: User = {} as User;
+    beforeAll(function () {
+        console.log('\n');
+        console.log('Start to run the tests for the user model');
+        console.log('\n');
+    });
 
-    /* 
-        check if the methods are defined
-    */
+    afterAll(function () {
+        console.log('\n');
+        console.log('End of running all the tests for the user model');
+        console.log('\n');
+    });
+
+    let TEST_USER: User = {} as User;
+
     it('should have a create method', () => {
         expect(store.create).toBeDefined();
     });
@@ -32,11 +41,8 @@ describe('User Model', () => {
         expect(store.delete).toBeDefined();
     });
 
-    /* 
-        check if the methods are functioning well
-    */
     it('create method should add an user', async () => {
-        const result: User = await store.create({
+        const createdUser: User = await store.create({
             firstname: 'natalie',
             lastname: 'portman',
             password: 'init_password',
@@ -44,22 +50,27 @@ describe('User Model', () => {
             email: 'natalie.portman@gmail.com',
         });
 
-        testUser = result;
-        const hashedPassword = result.password;
+        TEST_USER = createdUser;
 
-        const createdUser: User = {
-            id: result.id,
+        const expectedUser: User = {
+            id: createdUser.id,
             firstname: 'natalie',
             lastname: 'portman',
-            password: hashedPassword,
+            password: TEST_USER.password,
             role: 'ADMIN',
             email: 'natalie.portman@gmail.com',
         };
 
-        expect(result).toEqual(createdUser);
+        expect(expectedUser).toEqual(createdUser);
     });
 
     it('update method should update the respective user data', async () => {
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error(
+                "The user is not created, so, we can't update their info."
+            );
+        }
+
         const updatedUser = await store.update(
             {
                 firstname: 'Chaklader',
@@ -68,83 +79,84 @@ describe('User Model', () => {
                 role: 'ADMIN',
                 email: 'omi.chaklader@gmail.com',
             },
-            2
+            TEST_USER.id
         );
 
-        let hashedPassword;
-        let result;
+        TEST_USER = await store.show(TEST_USER.id);
 
-        if (testUser.id) {
-            result = await store.show(2);
-            hashedPassword = result.password;
-        }
-
-        if (hashedPassword) {
-            expect(result).toEqual({
-                id: 2,
-                firstname: 'Chaklader',
-                lastname: 'Arefe',
-                password: hashedPassword,
-                role: 'ADMIN',
-                email: 'omi.chaklader@gmail.com',
-            });
-        }
+        expect(TEST_USER).toEqual({
+            id: TEST_USER.id,
+            firstname: 'Chaklader',
+            lastname: 'Arefe',
+            password: TEST_USER.password,
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
+        });
     });
 
     it('login method should return the user', async () => {
-        const result = await store.login('omi.chaklader@gmail.com', 'password');
+        const loggedinUser = await store.login(
+            'omi.chaklader@gmail.com',
+            'password'
+        );
 
-        if (result === null) {
+        if (loggedinUser == null) {
             throw new Error('No user found for the email and password.');
         }
 
-        const hashedPassword = result.password;
-
-        expect(result).toEqual({
-            id: result.id,
+        expect(loggedinUser).toEqual({
+            id: loggedinUser.id,
             firstname: 'Chaklader',
             lastname: 'Arefe',
-            password: hashedPassword,
+            password: loggedinUser.password,
             role: 'ADMIN',
             email: 'omi.chaklader@gmail.com',
         });
     });
 
     it('index method should return a list of users', async () => {
-        const result = await store.index();
+        const allUsers = await store.index();
 
-
-        expect(result[0].id).toEqual(2);
-        // expect(result[0].password).toEqual(testUser.password);
-        expect(result[0].firstname).toEqual('Chaklader');
-        expect(result[0].lastname).toEqual('Arefe');
-        expect(result[0].role).toEqual('ADMIN');
-        expect(result[0].email).toEqual('omi.chaklader@gmail.com');
+        expect(allUsers).toEqual([
+            {
+                id: TEST_USER.id,
+                firstname: 'Chaklader',
+                lastname: 'Arefe',
+                password: TEST_USER.password,
+                role: 'ADMIN',
+                email: 'omi.chaklader@gmail.com',
+            },
+        ]);
     });
 
     it('show method should return the correct user', async () => {
-        if (testUser.id) {
-            const result = await store.show(testUser.id);
-
-            const hashedPassword = result.password;
-
-            expect(result).toEqual({
-                id: testUser.id,
-                firstname: 'Chaklader',
-                lastname: 'Arefe',
-                password: hashedPassword,
-                role: 'ADMIN',
-                email: 'omi.chaklader@gmail.com',
-            });
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error(
+                "The user is not created, so, we can't show their their info."
+            );
         }
+        const userById = await store.show(TEST_USER.id);
+
+        expect(userById).toEqual({
+            id: TEST_USER.id,
+            firstname: 'Chaklader',
+            lastname: 'Arefe',
+            password: TEST_USER.password,
+            role: 'ADMIN',
+            email: 'omi.chaklader@gmail.com',
+        });
     });
 
     it('delete method should remove the user', async () => {
-        if (testUser.id) {
-            store.delete(testUser.id);
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error(
+                "The user is not created, so, we can't delete them."
+            );
         }
-        const result = await store.index();
 
-        expect(result.length).toEqual(0);
+        store.delete(TEST_USER.id);
+        const allUsers = await store.index();
+
+        expect(allUsers).toEqual([]);
     });
 });

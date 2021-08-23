@@ -56,14 +56,14 @@ var UsersManagement = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'INSERT INTO users (first_name, last_name, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
+                        sql = 'INSERT INTO users (firstname, lastname, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
                         hashedPassword = bcrypt_1["default"].hashSync(u.password + pepper, parseInt(saltRounds));
                         return [4 /*yield*/, conn.query(sql, [
-                                u.firstName,
-                                u.lastName,
+                                u.firstname,
+                                u.lastname,
                                 hashedPassword,
                                 u.role,
                                 u.email,
@@ -75,39 +75,43 @@ var UsersManagement = /** @class */ (function () {
                         return [2 /*return*/, newUser];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("Could not add new user with name " + u.firstName + " " + u.lastName + ". Error: " + err_1);
+                        throw new Error("Could not add new user with name " + u.firstname + " " + u.lastname + ". Error: " + err_1);
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
+    /*
+        the primary keu userId can't be updated
+    */
     UsersManagement.prototype.update = function (u, userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, conn, result, updatedUser, err_2;
+            var sql, conn, hashedPassword, result, updateResult, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'UPDATE users SET first_name=($1), last_name=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
+                        sql = 'UPDATE users SET firstname=($1), lastname=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
+                        hashedPassword = bcrypt_1["default"].hashSync(u.password + pepper, parseInt(saltRounds));
                         return [4 /*yield*/, conn.query(sql, [
-                                u.firstName,
-                                u.lastName,
-                                u.password,
+                                u.firstname,
+                                u.lastname,
+                                hashedPassword,
                                 u.role,
                                 u.email,
                                 userId,
                             ])];
                     case 2:
                         result = _a.sent();
-                        updatedUser = result.rows[0];
+                        updateResult = result.rows[0];
                         conn.release();
-                        return [2 /*return*/, updatedUser];
+                        return [2 /*return*/, updateResult];
                     case 3:
                         err_2 = _a.sent();
-                        throw new Error("Could not updated user with name " + u.firstName + " " + u.lastName + ". Error: " + err_2);
+                        throw new Error("Could not updated user with name " + u.firstname + " " + u.lastname + ". Error: " + err_2);
                     case 4: return [2 /*return*/];
                 }
             });
@@ -128,10 +132,10 @@ var UsersManagement = /** @class */ (function () {
                         if (result.rows.length) {
                             user = result.rows[0];
                             if (bcrypt_1["default"].compareSync(password + pepper, user.password)) {
-                                console.log('yes');
+                                console.log('user found with the provided email and password');
                                 return [2 /*return*/, user];
                             }
-                            console.log('no..');
+                            console.log('No user found with the provided email and password');
                         }
                         return [2 /*return*/, null];
                 }

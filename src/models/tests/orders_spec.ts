@@ -4,15 +4,15 @@ import { UsersManagement, User } from '../users';
 
 const uStore = new UsersManagement();
 const pStore = new ProductStore();
-const store = new OrderStore();
+const orderStore = new OrderStore();
 
 describe('Order Model', () => {
-    let testUser: User = {} as User;
-    let testOrder: Order = {} as Order;
-    let testProduct: Product = {} as Product;
+    let TEST_USER: User = {} as User;
+    let TEST_ORDER: Order = {} as Order;
+    let TEST_PRODUCT: Product = {} as Product;
 
     beforeAll(async () => {
-        testUser = await uStore.create({
+        TEST_USER = await uStore.create({
             firstname: 'merlion',
             lastname: 'monroe',
             password: 'password',
@@ -20,7 +20,7 @@ describe('Order Model', () => {
             email: 'm.monroe@gmail.com',
         });
 
-        testProduct = await pStore.create({
+        TEST_PRODUCT = await pStore.create({
             name: 'Bobby Fischer Teaches Chess',
             price: 457,
             category: 'Chess',
@@ -28,82 +28,96 @@ describe('Order Model', () => {
     });
 
     afterAll(async () => {
-        if (testUser.id && testOrder.id && testProduct.id) {
-            store.delete(testOrder.id);
-             await pStore.delete(testProduct.id);
-             await uStore.delete(testUser.id);
+        if (TEST_PRODUCT == null || TEST_PRODUCT.id == null) {
+            throw new Error('Test product is not created ');
         }
+
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error('Test user is not created ');
+        }
+
+        await pStore.delete(TEST_PRODUCT.id);
+        await uStore.delete(TEST_USER.id);
     });
 
-    /* 
-     check if the methods are defined well
-    */
     it('should have a create method', () => {
-        expect(store.create).toBeDefined();
+        expect(orderStore.create).toBeDefined();
     });
 
     it('should have a addProduct method', () => {
-        expect(store.addProduct).toBeDefined();
+        expect(orderStore.addProduct).toBeDefined();
     });
 
     it('should have an index method', () => {
-        expect(store.index).toBeDefined();
+        expect(orderStore.index).toBeDefined();
     });
 
     it('should have a show method', () => {
-        expect(store.show).toBeDefined();
+        expect(orderStore.show).toBeDefined();
     });
 
     it('should have a delete method', () => {
-        expect(store.delete).toBeDefined();
+        expect(orderStore.delete).toBeDefined();
     });
 
-    /* 
-     check if the methods are functioning well
-    */
     it('create method should add an order', async () => {
-        if (testUser && testUser.id) {
-            testOrder = await store.create({
-                userId: testUser.id,
-                status: 'open',
-            });
-
-            expect(JSON.parse(JSON.stringify(testOrder))).toEqual({
-                id: 1,
-                status: 'open',
-                user_id: '1',
-            });
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error('Test user is not created ');
         }
+
+        const createdOrder = await orderStore.create({
+            userId: TEST_USER.id,
+            status: 'open',
+        });
+
+        TEST_ORDER = createdOrder;
+
+        let testOrderAsStr: string = JSON.stringify(TEST_ORDER);
+        let testOrderAsJSONStr: any = JSON.parse(testOrderAsStr);
+
+        expect(testOrderAsJSONStr).toEqual({
+            id: 1,
+            status: 'open',
+            user_id: '1',
+        });
     });
 
     it('index method should return a list of orders', async () => {
-        const result = await store.index();
-
-        if (testUser.id) {
-            expect(JSON.stringify(result)).toContain(
-                JSON.stringify([
-                    {
-                        id: testOrder.id,
-                        status: 'open',
-                        user_id: testUser.id + '',
-                    },
-                ])
-            );
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error('Test user is not created ');
         }
+
+        const allOrders = await orderStore.index();
+
+        let allOrdersAsStr: string = JSON.stringify(allOrders);
+        let expectedOrders: string = JSON.stringify([
+            {
+                id: TEST_ORDER.id,
+                status: 'open',
+                user_id: TEST_USER.id + '',
+            },
+        ]);
+
+        expect(allOrdersAsStr).toContain(expectedOrders);
     });
 
     it('show method should return the correct order', async () => {
-        const result = await store.show(1);
+        const orderById = await orderStore.show(1);
 
-        expect(JSON.stringify(result)).toEqual(
-            JSON.stringify({ id: 1, status: 'open', user_id: '1' })
-        );
+        let orderAsStr: string = JSON.stringify(orderById);
+        let orderAsJSONStr: any = JSON.parse(orderAsStr);
+
+        expect(orderAsJSONStr).toEqual({
+            id: 1,
+            status: 'open',
+            user_id: '1',
+        });
     });
 
     it('delete method should remove the order', async () => {
-        store.delete(1);
+        orderStore.delete(1);
 
-        const result = await store.index();
+        const result = await orderStore.index();
         expect(result).toEqual([]);
     });
 });
