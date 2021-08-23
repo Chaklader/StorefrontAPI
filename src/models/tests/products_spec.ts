@@ -95,16 +95,16 @@ describe('Product Model', () => {
     });
 
     it('delete method should remove the product', async () => {
-        store.delete(createdProductId);
+        const deleteProduct = await store.delete(2);
         const result = await store.index();
 
-        const productIds: (number | undefined)[] = result.map(({ id }) => id);
-
-        if (productIds && productIds.length > 0) {
-            expect(false).toEqual(productIds.includes(createdProductId));
-            return;
-        }
-
-        expect(result).toEqual([]);
+        expect(result).toEqual([
+            {
+                id: 1,
+                name: 'Bobby Fischer Teaches Chess',
+                price: 457,
+                category: 'Chess',
+            },
+        ]);
     });
 });

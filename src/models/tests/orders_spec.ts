@@ -76,16 +76,13 @@ describe('Order Model', () => {
         }
     });
 
-    // ::NOTES::
-    // TODO: the create method is not working, so its pointless to test further
-
     // it('addProduct method should add products to an open order', async () => {
     //     if (testOrder.id && testProduct.id) {
-    //         // const result: Order = await store.addProduct(
-    //         //     100,
-    //         //     testOrder.id,
-    //         //     testProduct.id
-    //         // );
+    //         const result: Order = await store.addProduct(
+    //             100,
+    //             testOrder.id,
+    //             testProduct.id
+    //         );
 
     //         // expect(result).toEqual({
     //         //     id: 1,
@@ -102,12 +99,6 @@ describe('Order Model', () => {
     it('index method should return a list of orders', async () => {
         const result = await store.index();
 
-        // [ { id: 1, status: 'open', user_id: '1' } ]
-
-        console.log('------------order index -------------');
-        console.log(result);
-        console.log('------------order index -------------');
-
         if (testUser.id) {
             expect(JSON.stringify(result)).toContain(
                 JSON.stringify([
@@ -121,22 +112,18 @@ describe('Order Model', () => {
         }
     });
 
-    // it('show method should return the correct order', async () => {
-    //     const result = await store.show(1);
+    it('show method should return the correct order', async () => {
+        const result = await store.show(1);
 
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         userId: 12345,
-    //         status: 'open',
-    //     });
-    // });
+        expect(JSON.stringify(result)).toEqual(
+            JSON.stringify({ id: 1, status: 'open', user_id: '1' })
+        );
+    });
 
-    // it('delete method should remove the order', async () => {
-    //     store.delete(1);
+    it('delete method should remove the order', async () => {
+        store.delete(1);
 
-    //     const result = await store.index();
-
-    //     expect(result).toEqual([]);
-    // });
-
+        const result = await store.index();
+        expect(result).toEqual([]);
+    });
 });
