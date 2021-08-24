@@ -64,8 +64,30 @@ const create = async (_req: Request, res: Response) => {
 };
 
 /* 
-    only the respective user will be able to add more products to their order 
-    after the token validation...
+    only the respective user will be able to add more products to their order after the token validation. 
+    We will add the products to an order is the status is open. For the same order and the products user 
+    can chnage their quantity and update the order. The data will be stored in the table named 'order_products'. 
+
+    The POST request will have an URL with user ID and order ID and an example will be:
+
+        http://localhost:3000/users/4/orders/4/products
+
+
+    The payload example can be:
+
+        {
+            "quantity": "700",
+            "productId":"1"
+        }
+
+    The response example can be:
+        
+        {
+            "id": 1,
+            "quantity": 1000,
+            "order_id": "1",
+            "product_id": "1"
+        }
 */
 const addProduct = async (_req: Request, res: Response) => {
     // params
@@ -102,7 +124,7 @@ const addProduct = async (_req: Request, res: Response) => {
         const orderProduct = await store.addProduct(
             quantity,
             orderId,
-            productId, 
+            productId,
             userId
         );
 

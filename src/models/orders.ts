@@ -1,5 +1,5 @@
-import { parse } from 'dotenv';
 import client from '../database';
+import OrderProducts from './order_products';
 
 export type Order = {
     id?: number;
@@ -31,29 +31,27 @@ export class OrderStore {
         }
     }
 
+    /* 
+        
+    */
     async addProduct(
         quantity: number,
         orderId: number,
         productId: number,
         userId: number
-    ): Promise<Order> {
-        /* 
-            check if the orer status is "open" so we can add products to the respective order
-        */
-
-            console.log(quantity+' '+
-                orderId+' '+
-                productId+' '+
-                userId+' ');
+    ): Promise<OrderProducts> {
         try {
-            const sql = 'SELECT * FROM orders WHERE id=($1)';
             //@ts-ignore
+
+            const sql = 'SELECT * FROM orders WHERE id=($1)';
             const conn = await client.connect();
 
-            const result = await conn.query(sql, [orderId]);
-            const order = result.rows[0];
+            const findOrderById = await conn.query(sql, [orderId]);
+            const order = findOrderById.rows[0];
 
             if (order.status !== 'open') {
+                conn.release();
+
                 throw new Error(
                     `Could not add product ${productId} to order ${orderId} because order status is ${order.status}`
                 );
@@ -61,91 +59,78 @@ export class OrderStore {
 
             conn.release();
         } catch (err) {
-            throw new Error(`${err}`);
+            throw new Error(
+                `We dont find the order by the ID and error: ${err} is received`
+            );
         }
 
-        /* 
-            As the oder is open, please, add products to the order.
-        */
         try {
             // @ts-ignore
-            
             const conn = await client.connect();
 
             const sql1 =
                 'SELECT * FROM order_products WHERE order_id=($1) AND product_id=($2)';
-
-            console.log(`SELECT * FROM order_products WHERE order_id={o} AND product_id={p}`, orderId, productId);    
-            const result1 = await conn.query(sql1, [orderId, productId]);
+            const isOrderExistForGivenProduct = await conn.query(sql1, [
+                orderId,
+                productId,
+            ]);
 
             const sql0 = 'SELECT * FROM orders WHERE id=($1)';
             const result0 = await conn.query(sql0, [orderId]);
 
-            const uId: number = JSON.parse(JSON.stringify(result0)).user_id;
+            const uId: number = JSON.parse(
+                JSON.stringify(result0.rows[0])
+            ).user_id;
+            const isOrderExistForSameProduct: boolean =
+                isOrderExistForGivenProduct.rows[0] == null;
 
+                
 
-            console.log('mmmmmmmmmmmmmmmmmmmmmmm');
-            // console.log(result1);
-            console.log('\n');
-            console.log(result0.rows[0]);
-            console.log('\n');
-            console.log('mmmmmmmmmmmmmmmmmmmmmmm');
+            /* 
+                update the quantity for an existing order
+            */
+            if (!isOrderExistForSameProduct) {
+                
+                const isUserIdMatchesBetweenDbANDULR = !uId || uId != userId;
+                if (isUserIdMatchesBetweenDbANDULR) {
+                    
+                    conn.release();
 
-            const b:boolean = result1 !=null && result1 != undefined;
-            console.log('00000000000');
-            console.log('boolran = ' + b);
-            console.log('00000000000');
-
-            if (result1 !=null && result1 != undefined && result1.rows[0] !=null && result1.rows[0] != undefined) {
-                console.log('ttttttttttttttt1');
-                if (!uId || uId != userId) {
-                    // throw new Error(
-                    //     "Order Id for the respective user doesn't match"
-                    // );
-
-                    console.log("Order Id for the respective user doesn't match");
+                    throw new Error(
+                        "Order Id for the respective user doesn't match"
+                    );
                 }
+                
 
-                /* 
-                    {
-                        "id": 1,
-                        "quantity": 20,
-                        "order_id": "1",
-                        "product_id": "1"
-                    }
-                */
-                const tut = result1.rows[0];
+                const resultValue = isOrderExistForGivenProduct.rows[0];
+
+                const qty: number = JSON.parse(
+                    JSON.stringify(resultValue)
+                ).quantity;
+
                 const orderProductId: number = JSON.parse(
-                    JSON.stringify(tut)
+                    JSON.stringify(resultValue)
                 ).id;
-
-                const qty: number = JSON.parse(JSON.stringify(tut)).quantity;
                 const updatedQty: number = +qty + +quantity;
 
                 const sql2 =
                     'UPDATE order_products SET quantity=($1) WHERE id=($2)';
-                const sql3 = 'SELECT * FROM order_products WHERE id=($1)';
+                const c =  await conn.query(sql2, [updatedQty, orderProductId]);
 
-                const result2 = await conn.query(sql2, [
-                    updatedQty,
-                    orderProductId,
+                console.log(`UPDATE order_products SET quantity=${updatedQty} WHERE id=${orderProductId}`);
+
+                const sql3 = 'SELECT * FROM order_products WHERE id=($1)';
+                const orderProductTableResponse = await conn.query(sql3, [
+                    orderProductId
                 ]);
 
-                const e = result2.rows[0];
-                console.log(e);
-
-                const result3 = await conn.query(sql3, [orderProductId]);
-
-                const f = result3.rows[0];
-                console.log(f);
-
                 conn.release();
-
-                return f;
+                return orderProductTableResponse.rows[0];
             }
 
-            console.log('ttttttttttttttt2');
-
+            /* 
+                insert a new entry in the order_products table 
+            */
             const sql =
                 'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *';
 
