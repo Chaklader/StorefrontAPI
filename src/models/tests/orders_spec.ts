@@ -40,7 +40,6 @@ describe('Order Model', () => {
             throw new Error('Test user is not created ');
         }
 
-    
         await pStore.delete(TEST_PRODUCT.id);
         await uStore.delete(TEST_USER.id);
     });
@@ -87,6 +86,9 @@ describe('Order Model', () => {
         });
     });
 
+    /* 
+        new entry to the order_products table
+    */
     it('addProduct method should add products to an order with new entry in the order_products table', async () => {
         if (TEST_USER == null || TEST_USER.id == null) {
             throw new Error('Test user is not created ');
@@ -112,6 +114,40 @@ describe('Order Model', () => {
         expect(JSON.parse(JSON.stringify(result))).toEqual({
             id: 1,
             quantity: 150,
+            order_id: '1',
+            product_id: '1',
+        });
+    });
+
+    /* 
+        update an existing entry to the order_products table and increase the quantity
+    */
+    it('addProduct method should add products to an order and will upadted the quantity', async () => {
+        if (TEST_USER == null || TEST_USER.id == null) {
+            throw new Error('Test user is not created ');
+        }
+
+        if (TEST_PRODUCT == null || TEST_PRODUCT.id == null) {
+            throw new Error('Test product is not created ');
+        }
+
+        if (TEST_ORDER == null || TEST_ORDER.id == null) {
+            throw new Error('Test product is not created ');
+        }
+
+        const result = await orderStore.addProduct(
+            150,
+            TEST_ORDER.id,
+            TEST_PRODUCT.id,
+            TEST_USER.id
+        );
+
+        TEST_ORDER_PRODUCTS = result;
+
+        // added the 150 to existing quantity of 150 that makes total 300 quantity
+        expect(JSON.parse(JSON.stringify(result))).toEqual({
+            id: 1,
+            quantity: 300,
             order_id: '1',
             product_id: '1',
         });
