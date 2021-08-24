@@ -6,9 +6,7 @@ import orderRoutes from './handlers/orders';
 import userRoute from './handlers/users';
 import dashboardRoutes from './handlers/dashboard';
 
-
 const app: express.Application = express();
-const address: string = '0.0.0.0:3000';
 
 app.use(bodyParser.json());
 
@@ -17,11 +15,10 @@ orderRoutes(app);
 userRoute(app);
 dashboardRoutes(app);
 
-
 app.get('/', function (req: Request, res: Response) {
     res.send('Hello World!');
 });
 
-app.listen(3000, function () {
-    console.log(`starting app on: ${address}`);
+const server = app.listen(3000, function () {
+    console.log('Listening on port ' + server.address()?.toString + '  .....');
 });

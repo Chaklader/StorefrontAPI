@@ -6,7 +6,7 @@
     "scripts": {
         "start": "nodemon src/server.ts",
         "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-        "test": "ENV=dev && db-migrate --env dev up && jasmine-ts && db-migrate reset --env dev",
+        "test": "ENV=test && db-migrate --env test up && jasmine-ts && db-migrate reset --env test",
         "dev_up": "ENV=dev db-migrate --env dev up",
         "dev_down": "ENV=dev db-migrate db:drop dev",
         "tsc": "tsc"
@@ -41,6 +41,7 @@
         "jasmine-spec-reporter": "^6.0.0",
         "jasmine-ts": "^0.3.0",
         "nodemon": "^2.0.12",
+        "supertest": "^6.1.6",
         "ts-node": "^9.1.1",
         "tsc-watch": "^4.2.9"
     }
