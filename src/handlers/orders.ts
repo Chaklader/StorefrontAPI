@@ -172,7 +172,7 @@ const destroy = async (_req: Request, res: Response) => {
         const order = await store.show(orderId);
 
         /* 
-            Noone but the respective user can create their own order
+            Noone but the respective user can delete their own order
         */
         try {
             const authorizationHeader = _req.headers.authorization + '';

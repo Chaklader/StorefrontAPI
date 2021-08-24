@@ -117,8 +117,6 @@ export class OrderStore {
                     'UPDATE order_products SET quantity=($1) WHERE id=($2)';
                 const c =  await conn.query(sql2, [updatedQty, orderProductId]);
 
-                console.log(`UPDATE order_products SET quantity=${updatedQty} WHERE id=${orderProductId}`);
-
                 const sql3 = 'SELECT * FROM order_products WHERE id=($1)';
                 const orderProductTableResponse = await conn.query(sql3, [
                     orderProductId

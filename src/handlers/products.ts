@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const tokenSecret = process.env.TOKEN_SECRET + '';
 
-const store = new ProductStore();
+const productStore = new ProductStore();
 
 /* 
 #### Products
@@ -24,16 +24,8 @@ const create = async (_req: Request, res: Response) => {
             category: _req.body.category,
         };
 
-        console.log('----------product--------');
-        console.log(product);
-        console.log('----------product--------');
+        const newProduct = await productStore.create(product);
 
-        const newProduct = await store.create(product);
-
-        console.log('----------new product--------');
-        console.log(newProduct);
-        console.log('----------new product--------');
-        
         res.json(newProduct);
     } catch (err) {
         res.status(400);
@@ -43,7 +35,7 @@ const create = async (_req: Request, res: Response) => {
 
 const index = async (_req: Request, res: Response) => {
     try {
-        const products = await store.index();
+        const products = await productStore.index();
         res.json(products);
     } catch (err) {
         res.status(400);
@@ -55,7 +47,7 @@ const show = async (_req: Request, res: Response) => {
     try {
         const productId = parseInt(_req.params.id);
 
-        const product = await store.show(productId);
+        const product = await productStore.show(productId);
         res.json(product);
     } catch (err) {
         res.status(400);
@@ -69,7 +61,7 @@ const show = async (_req: Request, res: Response) => {
 const productsByCategory = async (_req: Request, res: Response) => {
     try {
         const category = _req.params.category;
-        const products = await store.productsByCategory(category);
+        const products = await productStore.productsByCategory(category);
 
         res.json(products);
     } catch (err) {
@@ -102,7 +94,7 @@ const destroy = async (_req: Request, res: Response) => {
     try {
         const productId = parseInt(_req.params.id);
 
-        const delProduct = await store.delete(productId);
+        const delProduct = await productStore.delete(productId);
         res.json(`deleted the product with Id ${productId}`);
     } catch (err) {
         res.status(400);

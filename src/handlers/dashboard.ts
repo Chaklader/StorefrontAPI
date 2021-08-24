@@ -39,6 +39,7 @@ const fiveMostExpensive = async (_req: Request, res: Response) => {
 
 const fiveMostPopular = async (_req: Request, res: Response) => {
     try {
+        console.log('--------5 most popular-------');
         const users = await dashboard.fiveMostPopularProducts();
         res.json(users);
     } catch (err) {
@@ -124,7 +125,7 @@ const showCompletedOrders = async (_req: Request, res: Response) => {
 };
 
 const dashboardRoutes = (app: express.Application) => {
-    app.get('/products_in_orders', productsInOrders);
+    app.get('/products-in-orders', productsInOrders);
     app.get('/users-with-orders', usersWithOrders);
     app.get('/five-most-expensive', fiveMostExpensive);
     app.get('/five-most-popular', fiveMostPopular);
