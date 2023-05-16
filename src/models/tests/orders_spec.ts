@@ -2,9 +2,9 @@ import { OrderProducts, OrderProductsStore } from './../order_products';
 
 import { Product, ProductStore } from '../products';
 import { OrderStore, Order } from '../orders';
-import { UsersManagement, User } from '../users';
+import { UsersOperations, User } from '../users';
 
-const uStore = new UsersManagement();
+const uStore = new UsersOperations();
 const pStore = new ProductStore();
 const orderStore = new OrderStore();
 const orderProductsStore = new OrderProductsStore();

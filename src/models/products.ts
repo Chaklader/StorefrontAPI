@@ -8,7 +8,7 @@ export type Product = {
 };
 
 export class ProductStore {
-    async create(p: Product): Promise<Product> {
+    public async create(product: Product): Promise<Product> {
         try {
             console.log('----create product ------');
             const sql =
@@ -16,7 +16,7 @@ export class ProductStore {
             // @ts-ignore
             const conn = await client.connect();
 
-            const result = await conn.query(sql, [p.name, p.price, p.category]);
+            const result = await conn.query(sql, [product.name, product.price, product.category]);
 
             const newProduct = result.rows[0];
             let parsedNewProduct: any = JSON.parse(JSON.stringify(newProduct));
@@ -26,12 +26,12 @@ export class ProductStore {
             return newProduct;
         } catch (err) {
             throw new Error(
-                `Could not add new product ${p.name} with ID ${p.id}. Error: ${err}`
+                `Could not add new product ${product.name} with ID ${product.id}. Error: ${err}`
             );
         }
     }
 
-    async index(): Promise<Product[]> {
+    public async index(): Promise<Product[]> {
         try {
             // @ts-ignore
             const conn = await client.connect();
@@ -47,7 +47,7 @@ export class ProductStore {
         }
     }
 
-    async productsByCategory(category: string): Promise<Product[]> {
+    public async productsByCategory(category: string): Promise<Product[]> {
         try {
             // @ts-ignore
             const conn = await client.connect();
@@ -65,7 +65,7 @@ export class ProductStore {
         }
     }
 
-    async show(id: number): Promise<Product> {
+    public async show(id: number): Promise<Product> {
         try {
             const sql = 'SELECT * FROM products WHERE id=($1)';
 
@@ -81,7 +81,7 @@ export class ProductStore {
         }
     }
 
-    async delete(id: number): Promise<Product> {
+    public async delete(id: number): Promise<Product> {
         try {
             const sql = 'DELETE FROM products WHERE id=($1)';
             // @ts-ignore

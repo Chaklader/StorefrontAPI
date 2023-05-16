@@ -1,7 +1,9 @@
-import express, { Request, Response } from 'express';
-import { ProductStore, Product } from '../models/products';
+import express, {Request, Response} from 'express';
+import {ProductStore, Product} from '../models/products';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+
+
 
 dotenv.config();
 const tokenSecret = process.env.TOKEN_SECRET + '';
@@ -18,10 +20,11 @@ const productStore = new ProductStore();
 */
 const create = async (_req: Request, res: Response) => {
     try {
+        const {name, price, category} = _req.body;
         const product: Product = {
-            name: _req.body.name,
-            price: _req.body.price,
-            category: _req.body.category,
+            name,
+            price,
+            category,
         };
 
         const newProduct = await productStore.create(product);
@@ -46,8 +49,8 @@ const index = async (_req: Request, res: Response) => {
 const show = async (_req: Request, res: Response) => {
     try {
         const productId = parseInt(_req.params.id);
-
         const product = await productStore.show(productId);
+
         res.json(product);
     } catch (err) {
         res.status(400);
@@ -55,9 +58,7 @@ const show = async (_req: Request, res: Response) => {
     }
 };
 
-/* 
-    this will find the products based on category provided in the URL parameter
-*/
+
 const productsByCategory = async (_req: Request, res: Response) => {
     try {
         const category = _req.params.category;
@@ -70,9 +71,6 @@ const productsByCategory = async (_req: Request, res: Response) => {
     }
 };
 
-/* 
-    only an admin can delete an product
-*/
 const destroy = async (_req: Request, res: Response) => {
     try {
         const authorizationHeader = _req.headers.authorization + '';
@@ -80,7 +78,7 @@ const destroy = async (_req: Request, res: Response) => {
 
         const decoded: any = jwt.verify(token, tokenSecret);
 
-        if (decoded.role != 'ADMIN' || decoded.role != 'admin') {
+        if (!['ADMIN', 'admin'].includes(decoded.role)) {
             throw new Error('Sorry, only an admin can delete a product.');
         }
     } catch (err) {

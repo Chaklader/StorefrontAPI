@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
-import { UsersManagement, User } from '../models/users';
+import { UsersOperations, User } from '../models/users';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const store = new UsersManagement();
+const store = new UsersOperations();
 
 /* 
 #### API endpoints
@@ -14,20 +14,21 @@ const store = new UsersManagement();
 - Show [token required]
 - Create N[token required]
 */
-
 const tokenSecret = process.env.TOKEN_SECRET + '';
 
 /* 
-    create an user with first and last name, password, role and email 
+    create a user with first and last name, password, role and email
 */
 const create = async (_req: Request, res: Response) => {
     try {
+        const { firstname, lastname, password, role, email } = _req.body;
+
         const user: User = {
-            firstname: _req.body.firstname,
-            lastname: _req.body.lastname,
-            password: _req.body.password,
-            role: _req.body.role,
-            email: _req.body.email,
+            firstname,
+            lastname,
+            password,
+            role,
+            email,
         };
 
         const newUser = await store.create(user);
@@ -98,7 +99,7 @@ const show = async (_req: Request, res: Response) => {
 };
 
 /* 
-    only an admin can delete an user
+    only an admin can delete a user
 */
 const destroy = async (_req: Request, res: Response) => {
     try {
@@ -109,7 +110,8 @@ const destroy = async (_req: Request, res: Response) => {
         const userRole = decoded.user.role;
 
         if (userRole != 'ADMIN') {
-            throw new Error('Sorry, noone but an admin can delete an  user...');
+            res.status(401).send('Sorry, only an admin can delete an user!');
+            return;
         }
     } catch (err) {
         res.status(401);
@@ -134,12 +136,15 @@ const destroy = async (_req: Request, res: Response) => {
     only the respective user can edit their own settings
 */
 const update = async (_req: Request, res: Response) => {
+
+    const { firstname, lastname, password, role, email } = _req.body;
+
     const user: User = {
-        firstname: _req.body.firstname,
-        lastname: _req.body.lastname,
-        password: _req.body.password,
-        role: _req.body.role,
-        email: _req.body.email,
+        firstname,
+        lastname,
+        password,
+        role,
+        email,
     };
 
     try {
@@ -149,9 +154,7 @@ const update = async (_req: Request, res: Response) => {
         const decoded: any = jwt.verify(token, tokenSecret);
 
         if (decoded.user.id != _req.params.id) {
-            throw new Error(
-                "Sorry, you can't change anyone else settings. Goodbye!!!"
-            );
+            res.status(401).send("Sorry, you can't change anyone else settings. Goodbye!!!");
         }
     } catch (err) {
         res.status(401);

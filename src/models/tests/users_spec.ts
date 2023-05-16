@@ -1,6 +1,6 @@
-import { UsersManagement, User } from '../users';
+import { UsersOperations, User } from '../users';
 
-const store = new UsersManagement();
+const store = new UsersOperations();
 
 describe('User Model', () => {
     beforeAll(function () {

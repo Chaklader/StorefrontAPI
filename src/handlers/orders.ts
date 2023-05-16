@@ -1,5 +1,5 @@
-import express, { Request, Response } from 'express';
-import { OrderStore, Order } from '../models/orders';
+import express, {Request, Response} from 'express';
+import {OrderStore, Order} from '../models/orders';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
@@ -14,32 +14,25 @@ const store = new OrderStore();
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 */
 
-/* 
-    an order can only be created by the respective user after the token validation
-    and the order status needs to be set as "open". The respective payload example:
+const secretToken = process.env.TOKEN_SECRET + '';
 
-        {
-            "userId": 1,
-            "status": "open"
-        }
-*/
 const create = async (_req: Request, res: Response) => {
     try {
+
+        const {userId, status} = _req.body;
+
         const order: Order = {
-            userId: _req.body.userId,
-            status: _req.body.status,
+            userId,
+            status,
         };
 
-        /* 
-            Noone but the respective user can create their own order
-        */
         try {
             const authorizationHeader = _req.headers.authorization + '';
             const token = authorizationHeader.split(' ')[1];
 
             const decoded: any = jwt.verify(
                 token,
-                process.env.TOKEN_SECRET + ''
+                secretToken
             );
 
             if (decoded.user.id != order.userId) {
@@ -90,22 +83,18 @@ const create = async (_req: Request, res: Response) => {
         }
 */
 const addProduct = async (_req: Request, res: Response) => {
-    // params
+
     const orderId: number = parseInt(_req.params.orderId);
     const userId: number = parseInt(_req.params.userId);
 
-    // payload
     const productId: number = _req.body.productId;
     const quantity: number = parseInt(_req.body.quantity);
 
-    /* 
-        Noone but the respective user can create their own order
-    */
     try {
         const authorizationHeader = _req.headers.authorization + '';
         const token = authorizationHeader.split(' ')[1];
 
-        const decoded: any = jwt.verify(token, process.env.TOKEN_SECRET + '');
+        const decoded: any = jwt.verify(token, secretToken);
 
         if (decoded.user.id != userId) {
             throw new Error(
@@ -135,9 +124,7 @@ const addProduct = async (_req: Request, res: Response) => {
     }
 };
 
-/* 
-    any autheticated user can see all the orders 
-*/
+
 const index = async (_req: Request, res: Response) => {
     try {
         const orders = await store.index();
@@ -148,9 +135,6 @@ const index = async (_req: Request, res: Response) => {
     }
 };
 
-/* 
-    any autheticated user can find an order by its ID
-*/
 const show = async (_req: Request, res: Response) => {
     try {
         const orderId = parseInt(_req.params.id);
@@ -163,30 +147,23 @@ const show = async (_req: Request, res: Response) => {
     }
 };
 
-/* 
-    only the respective user can delete their own order
-*/
 const destroy = async (_req: Request, res: Response) => {
     try {
         const orderId = parseInt(_req.params.id);
         const order = await store.show(orderId);
 
-        /* 
-            Noone but the respective user can delete their own order
-        */
         try {
             const authorizationHeader = _req.headers.authorization + '';
             const token = authorizationHeader.split(' ')[1];
 
             const decoded: any = jwt.verify(
                 token,
-                process.env.TOKEN_SECRET + ''
+                secretToken
             );
 
-            const jsonStr = JSON.stringify(order);
-            const uId = JSON.parse(jsonStr).user_id;
+            const userId = JSON.parse(JSON.stringify(order)).user_id;
 
-            if (decoded.user.id != uId) {
+            if (decoded.user.id != userId) {
                 throw new Error(
                     'only the respective user can delete their own order ..'
                 );
@@ -211,7 +188,7 @@ const verifyAuthToken = (_req: Request, res: Response, next: any) => {
     try {
         const authorizationHeader = _req.headers.authorization + '';
         const token = authorizationHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.TOKEN_SECRET + '');
+        const decoded = jwt.verify(token, secretToken);
 
         next();
     } catch (err) {

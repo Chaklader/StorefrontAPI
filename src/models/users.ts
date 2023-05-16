@@ -16,8 +16,8 @@ export type User = {
 const pepper = process.env.BYCRYPT_PASSWORD;
 const saltRounds = '' + process.env.SALT_ROUNDS;
 
-export class UsersManagement {
-    async create(u: User): Promise<User> {
+export class UsersOperations {
+    public async create(user: User): Promise<User> {
         try {
             const sql =
                 'INSERT INTO users (firstname, lastname, password, role, email) VALUES($1, $2, $3, $4, $5) RETURNING *';
@@ -25,16 +25,16 @@ export class UsersManagement {
             const conn = await client.connect();
 
             const hashedPassword = bcrypt.hashSync(
-                u.password + pepper,
+                user.password + pepper,
                 parseInt(saltRounds)
             );
 
             const result = await conn.query(sql, [
-                u.firstname,
-                u.lastname,
+                user.firstname,
+                user.lastname,
                 hashedPassword,
-                u.role,
-                u.email,
+                user.role,
+                user.email,
             ]);
 
             const newUser = result.rows[0];
@@ -44,15 +44,13 @@ export class UsersManagement {
             return newUser;
         } catch (err) {
             throw new Error(
-                `Could not add new user with name ${u.firstname} ${u.lastname}. Error: ${err}`
+                `Could not add new user with name ${user.firstname} ${user.lastname}. Error: ${err}`
             );
         }
     }
 
-    /* 
-        the primary keu userId can't be updated
-    */
-    async update(u: User, userId: number): Promise<User> {
+
+    public async update(user: User, userId: number): Promise<User> {
         try {
             const sql =
                 'UPDATE users SET firstname=($1), lastname=($2), password=($3), role=($4), email=($5) WHERE id=($6)';
@@ -60,16 +58,16 @@ export class UsersManagement {
             const conn = await client.connect();
 
             const hashedPassword = bcrypt.hashSync(
-                u.password + pepper,
+                user.password + pepper,
                 parseInt(saltRounds)
             );
 
             const result = await conn.query(sql, [
-                u.firstname,
-                u.lastname,
+                user.firstname,
+                user.lastname,
                 hashedPassword,
-                u.role,
-                u.email,
+                user.role,
+                user.email,
                 userId,
             ]);
 
@@ -80,12 +78,12 @@ export class UsersManagement {
             return updateResult;
         } catch (err) {
             throw new Error(
-                `Could not updated user with name ${u.firstname} ${u.lastname}. Error: ${err}`
+                `Could not updated user with name ${user.firstname} ${user.lastname}. Error: ${err}`
             );
         }
     }
 
-    async login(email: string, password: string): Promise<User | null> {
+    public async login(email: string, password: string): Promise<User | null> {
         const conn = await client.connect();
         const sql = 'SELECT * FROM users WHERE email=($1)';
 
@@ -105,14 +103,13 @@ export class UsersManagement {
         return null;
     }
 
-    async index(): Promise<User[]> {
+    public async index(): Promise<User[]> {
         try {
             // @ts-ignore
             const conn = await client.connect();
             const sql = 'SELECT * FROM users';
 
             const result = await conn.query(sql);
-
             conn.release();
 
             return result.rows;

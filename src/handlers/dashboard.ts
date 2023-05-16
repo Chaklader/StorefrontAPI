@@ -1,15 +1,19 @@
 import express, { Request, Response } from 'express';
-import { DashboardQueries } from '../services/dashboard';
+import {DashboardQueries, ExpensiveProducts, ProductsInOrders, UsersWithOrders} from '../services/dashboard';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import {Order} from "../models/orders";
+import {Product} from "../models/products";
 
 dotenv.config();
+
+const secretToken = process.env.TOKEN_SECRET + '';
 
 const dashboard = new DashboardQueries();
 
 const productsInOrders = async (_req: Request, res: Response) => {
     try {
-        const products = await dashboard.productsInOrders();
+        const products: ProductsInOrders[] = await dashboard.productsInOrders();
         res.json(products);
     } catch (err) {
         res.status(400);
@@ -19,7 +23,7 @@ const productsInOrders = async (_req: Request, res: Response) => {
 
 const usersWithOrders = async (_req: Request, res: Response) => {
     try {
-        const users = await dashboard.usersWithOrders();
+        const users: UsersWithOrders[] = await dashboard.usersWithOrders();
         res.json(users);
     } catch (err) {
         res.status(400);
@@ -29,7 +33,7 @@ const usersWithOrders = async (_req: Request, res: Response) => {
 
 const fiveMostExpensive = async (_req: Request, res: Response) => {
     try {
-        const users = await dashboard.fiveMostExpensiveProducts();
+        const users: ExpensiveProducts[] = await dashboard.fiveMostExpensiveProducts();
         res.json(users);
     } catch (err) {
         res.status(400);
@@ -40,7 +44,7 @@ const fiveMostExpensive = async (_req: Request, res: Response) => {
 const fiveMostPopular = async (_req: Request, res: Response) => {
     try {
         console.log('--------5 most popular-------');
-        const users = await dashboard.fiveMostPopularProducts();
+        const users: Product[] = await dashboard.fiveMostPopularProducts();
         res.json(users);
     } catch (err) {
         res.status(400);
@@ -61,7 +65,7 @@ const showCurrentOrders = async (_req: Request, res: Response) => {
 
             const decoded: any = jwt.verify(
                 token,
-                process.env.TOKEN_SECRET + ''
+                secretToken
             );
 
             if (decoded.user.id != userId) {
@@ -78,7 +82,7 @@ const showCurrentOrders = async (_req: Request, res: Response) => {
             return;
         }
 
-        const orders = await dashboard.showCurrentOrders(userId);
+        const orders: Order[] = await dashboard.showCurrentOrdersForUser(userId);
         res.json(orders);
     } catch (err) {
         res.status(400);
@@ -86,9 +90,7 @@ const showCurrentOrders = async (_req: Request, res: Response) => {
     }
 };
 
-/* 
-    Show completed orders by user 
-*/
+
 const showCompletedOrders = async (_req: Request, res: Response) => {
     try {
         const userId = parseInt(_req.params.userId);
@@ -99,7 +101,7 @@ const showCompletedOrders = async (_req: Request, res: Response) => {
 
             const decoded: any = jwt.verify(
                 token,
-                process.env.TOKEN_SECRET + ''
+                secretToken
             );
 
             if (decoded.user.id != userId) {
@@ -116,7 +118,7 @@ const showCompletedOrders = async (_req: Request, res: Response) => {
             return;
         }
 
-        const orders = await dashboard.showCompletedOrders(userId);
+        const orders: Order[] = await dashboard.showCompletedOrdersForUsers(userId);
         res.json(orders);
     } catch (err) {
         res.status(400);

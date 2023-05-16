@@ -8,17 +8,18 @@ export type Order = {
 };
 
 export class OrderStore {
-    async create(o: Order): Promise<Order> {
+
+    public async create(order: Order): Promise<Order> {
         try {
             const sql =
                 'INSERT INTO orders (user_id, status) VALUES($1, $2) RETURNING *';
             // @ts-ignore
             const conn = await client.connect();
 
-            if (o.status != 'open') {
+            if (order.status != 'open') {
                 console.log('We can only create an order that is open....');
             }
-            const result = await conn.query(sql, [o.userId, 'open']);
+            const result = await conn.query(sql, [order.userId, 'open']);
 
             const newOrder = result.rows[0];
             conn.release();
@@ -26,15 +27,13 @@ export class OrderStore {
             return newOrder;
         } catch (err) {
             throw new Error(
-                `Could not add new order for user ID ${o.userId} for Error: ${err}`
+                `Could not add new order for user ID ${order.userId} for Error: ${err}`
             );
         }
     }
 
-    /* 
-        
-    */
-    async addProduct(
+
+    public async addProduct(
         quantity: number,
         orderId: number,
         productId: number,
@@ -75,47 +74,34 @@ export class OrderStore {
                 productId,
             ]);
 
-            const sql0 = 'SELECT * FROM orders WHERE id=($1)';
-            const result0 = await conn.query(sql0, [orderId]);
+            const orderByIdSql = 'SELECT * FROM orders WHERE id=($1)';
+            const oderByOrder = await conn.query(orderByIdSql, [orderId]);
 
-            const uId: number = JSON.parse(
-                JSON.stringify(result0.rows[0])
-            ).user_id;
-            const isOrderExistForSameProduct: boolean =
-                isOrderExistForGivenProduct.rows[0] == null;
+            const userIdForPlacedOrder: number = JSON.parse(JSON.stringify(oderByOrder.rows[0])).user_id;
 
-                
+            const isOrderExistForSameProduct: boolean = (isOrderExistForGivenProduct.rows[0] == null);
 
-            /* 
-                update the quantity for an existing order
-            */
             if (!isOrderExistForSameProduct) {
-                
-                const isUserIdMatchesBetweenDbANDULR = !uId || uId != userId;
+
+                const isUserIdMatchesBetweenDbANDULR = !userIdForPlacedOrder || userIdForPlacedOrder != userId;
                 if (isUserIdMatchesBetweenDbANDULR) {
-                    
+
                     conn.release();
 
                     throw new Error(
                         "Order Id for the respective user doesn't match"
                     );
                 }
-                
 
                 const resultValue = isOrderExistForGivenProduct.rows[0];
 
-                const qty: number = JSON.parse(
-                    JSON.stringify(resultValue)
-                ).quantity;
+                const qty: number = JSON.parse(JSON.stringify(resultValue)).quantity;
+                const orderProductId: number = JSON.parse(JSON.stringify(resultValue)).id;
 
-                const orderProductId: number = JSON.parse(
-                    JSON.stringify(resultValue)
-                ).id;
                 const updatedQty: number = +qty + +quantity;
 
-                const sql2 =
-                    'UPDATE order_products SET quantity=($1) WHERE id=($2)';
-                const c =  await conn.query(sql2, [updatedQty, orderProductId]);
+                const updateOrderProductSql: string = 'UPDATE order_products SET quantity=($1) WHERE id=($2)';
+                const c = await conn.query(updateOrderProductSql, [updatedQty, orderProductId]);
 
                 const sql3 = 'SELECT * FROM order_products WHERE id=($1)';
                 const orderProductTableResponse = await conn.query(sql3, [
@@ -149,7 +135,7 @@ export class OrderStore {
         }
     }
 
-    async index(): Promise<Order[]> {
+    public async index(): Promise<Order[]> {
         try {
             // @ts-ignore
             const conn = await client.connect();
@@ -165,7 +151,7 @@ export class OrderStore {
         }
     }
 
-    async show(id: number): Promise<Order> {
+    public async show(id: number): Promise<Order> {
         try {
             const sql = 'SELECT * FROM orders WHERE id=($1)';
             // @ts-ignore
@@ -181,7 +167,7 @@ export class OrderStore {
         }
     }
 
-    async delete(id: number): Promise<Order> {
+    public async delete(id: number): Promise<Order> {
         try {
             const sql = 'DELETE FROM orders WHERE id=($1)';
             // @ts-ignore
