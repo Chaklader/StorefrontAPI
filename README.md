@@ -1,5 +1,61 @@
 ## STOREFRONT BACKEND PROJECT
 
+
+## DATABASE VERSIONING
+
+1. npm install -g db-migrate
+
+2. yarn add db-migrate db-migrate-pg
+
+3. Add a database.json reference file in the root of the project
+
+```json
+
+{
+  "dev": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "fantasy_worlds",
+    "user": "magical_user",
+    "password": "password123"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "fantasy_worlds_test",
+    "user": "test_user",
+    "password": "password123"
+  }
+}
+```
+
+```json
+
+{
+    "dev": {
+        "driver": "pg",
+        "host": "127.0.0.1",
+        "database": { "ENV": "POSTGRES_DB" },
+        "user": { "ENV": "POSTGRES_USER" },
+        "password": { "ENV": "POSTGRES_PASSWORD" }
+    },
+    "test": {
+        "driver": "pg",
+        "host": "127.0.0.1",
+        "database": { "ENV": "POSTGRES_TEST_DB" },
+        "user": { "ENV": "POSTGRES_USER" },
+        "password": { "ENV": "POSTGRES_PASSWORD" }
+    }
+}
+```
+
+4. db-migrate create mythical-worlds-table --sql-file
+
+5. Add the SQL you need to the up and down sql files
+6. Bring the migration up db-migrate up
+7. Bring the migration down db-migrate down
+
+
 ### SETUP
 
 ## ENVIRONMENT VARIABLES AND APP SETUP
